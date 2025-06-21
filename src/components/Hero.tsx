@@ -10,25 +10,25 @@ const Hero = () => {
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center space-x-2 glass-effect text-orange-700 px-5 py-3 rounded-full text-sm font-medium mb-8 cursor-shadow">
             <TrendingUp className="w-4 h-4" />
-            <span>AI-Powered Content Intelligence</span>
+            <span>AI-Powered Creator Intelligence</span>
           </div>
           
           <h1 className="text-6xl md:text-7xl font-bold leading-tight mb-8">
-            Diagnose why your video{" "}
+            Optimize your entire{" "}
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-              underperformed
+              creator ecosystem
             </span>
           </h1>
           
           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Get instant insights on engagement drops, timing issues, and content structure - 
-            plus actionable workflows to repurpose and remediate your content across platforms.
+            Deep analytics on your audience, content performance, and growth patterns - 
+            plus strategic workflows to transform your creator profile across all platforms.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
             <Link to="/dashboard">
               <Button size="lg" className="gradient-orange text-white px-10 py-4 text-lg font-semibold rounded-xl cursor-hover cursor-shadow border-0">
-                Analyze Your Content
+                Analyze Your Profile
                 <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
             </Link>
@@ -49,7 +49,7 @@ const Hero = () => {
                   </svg>
                 </div>
                 <h3 className="font-bold text-gray-900 mb-3 text-lg">Diagnose</h3>
-                <p className="text-gray-600">Instant analysis of engagement drops and performance issues</p>
+                <p className="text-gray-600">Complete creator profile analysis with audience insights and performance patterns</p>
               </div>
               
               <div className="text-center group cursor-hover">
@@ -60,7 +60,7 @@ const Hero = () => {
                   </svg>
                 </div>
                 <h3 className="font-bold text-gray-900 mb-3 text-lg">Prescribe</h3>
-                <p className="text-gray-600">Get specific fixes and optimization recommendations</p>
+                <p className="text-gray-600">Strategic recommendations for content mix, timing, and audience alignment</p>
               </div>
               
               <div className="text-center group cursor-hover">
@@ -70,7 +70,7 @@ const Hero = () => {
                   </svg>
                 </div>
                 <h3 className="font-bold text-gray-900 mb-3 text-lg">Remediate</h3>
-                <p className="text-gray-600">Execute workflows to repurpose and republish content</p>
+                <p className="text-gray-600">Execute optimization workflows for content calendars, audience targeting, and growth</p>
               </div>
             </div>
           </div>

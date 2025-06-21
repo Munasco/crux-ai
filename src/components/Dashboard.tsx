@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import DiagnoseTab from "./dashboard/DiagnoseTab";
 import PrescribeTab from "./dashboard/PrescribeTab";
 import RemediateTab from "./dashboard/RemediateTab";
@@ -15,13 +15,13 @@ const Dashboard = () => {
       <div className="container mx-auto px-6 py-8">
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold mb-4">
-            Content Intelligence{" "}
+            Creator Intelligence{" "}
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-              Dashboard
+              Platform
             </span>
           </h1>
           <p className="text-gray-600 text-lg">
-            Diagnose, prescribe, and remediate your content performance issues
+            Comprehensive analytics and optimization for your entire creator ecosystem
           </p>
         </div>
 

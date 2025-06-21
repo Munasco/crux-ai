@@ -5,10 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { AlertTriangle, Clock, Eye, TrendingDown, Upload } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { AlertTriangle, Clock, Eye, TrendingDown, Upload, Users, Calendar, Target, BarChart, Video } from "lucide-react";
 
 const DiagnoseTab = () => {
-  const [videoUrl, setVideoUrl] = useState("");
+  const [creatorHandle, setCreatorHandle] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
@@ -17,33 +18,55 @@ const DiagnoseTab = () => {
     setTimeout(() => {
       setIsAnalyzing(false);
       setShowResults(true);
-    }, 3000);
+    }, 4000);
+  };
+
+  const creatorProfile = {
+    handle: "@sarahcreates",
+    followers: "47.2K",
+    avgViews: "12.3K",
+    engagementRate: "4.2%",
+    contentPillars: ["Tech Reviews", "Lifestyle", "Productivity"],
+    postingFrequency: "5x/week",
+    peakTimes: ["2-4 PM EST", "7-9 PM EST"]
   };
 
   const diagnosticResults = [
     {
       icon: TrendingDown,
-      title: "Low Retention at 12s",
+      title: "Declining Engagement Trend",
       severity: "high",
-      description: "Significant drop-off detected - likely due to slow hook delivery",
-      percentage: 68,
-      gradient: "from-red-400 to-orange-400"
+      description: "30% drop in engagement over last 4 weeks across all platforms",
+      percentage: 78,
+      gradient: "from-red-400 to-orange-400",
+      insight: "Your audience is becoming less responsive to your current content mix"
     },
     {
       icon: Clock,
-      title: "Suboptimal Posting Time",
+      title: "Suboptimal Content Timing",
       severity: "medium", 
-      description: "Posted 3 hours after your audience's peak activity window",
-      percentage: 45,
-      gradient: "from-orange-400 to-yellow-400"
+      description: "Missing 60% of your audience's active hours consistently",
+      percentage: 55,
+      gradient: "from-orange-400 to-yellow-400",
+      insight: "Your posting schedule doesn't align with follower activity patterns"
     },
     {
-      icon: Eye,
-      title: "Weak Call-to-Action",
+      icon: Target,
+      title: "Content Pillar Imbalance",
       severity: "medium",
-      description: "No clear CTA detected in first 30 seconds of content",
-      percentage: 32,
-      gradient: "from-orange-400 to-amber-400"
+      description: "85% tech content, but lifestyle posts get 3x more engagement",
+      percentage: 42,
+      gradient: "from-orange-400 to-amber-400",
+      insight: "Your highest-performing content type is underrepresented"
+    },
+    {
+      icon: Users,
+      title: "Audience Mismatch",
+      severity: "high",
+      description: "Creating for 25-35 age group, but 60% of followers are 18-25",
+      percentage: 71,
+      gradient: "from-red-500 to-pink-400",
+      insight: "Content doesn't match your actual audience demographics"
     }
   ];
 
@@ -58,49 +81,49 @@ const DiagnoseTab = () => {
   return (
     <div className="space-y-8">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Content Diagnostics</h2>
-        <p className="text-gray-600 text-lg">Upload or paste your video URL to analyze performance issues</p>
+        <h2 className="text-3xl font-bold mb-4">Creator Profile Analysis</h2>
+        <p className="text-gray-600 text-lg">Deep dive into your content ecosystem, audience, and performance patterns</p>
       </div>
 
       <Card className="glass-effect border-orange-100/50 rounded-2xl cursor-shadow">
         <CardHeader>
           <CardTitle className="flex items-center space-x-3">
             <div className="w-10 h-10 gradient-orange rounded-xl flex items-center justify-center">
-              <Upload className="w-5 h-5 text-white" />
+              <Users className="w-5 h-5 text-white" />
             </div>
-            <span>Upload Content</span>
+            <span>Analyze Creator Profile</span>
           </CardTitle>
           <CardDescription className="text-base">
-            Supports YouTube, TikTok, Instagram, and direct video uploads
+            Enter your social handle to analyze your complete creator ecosystem
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <Label htmlFor="video-url" className="text-base font-medium">Video URL or Upload</Label>
+            <Label htmlFor="creator-handle" className="text-base font-medium">Creator Handle or Profile URL</Label>
             <Input
-              id="video-url"
-              placeholder="https://youtube.com/watch?v=..."
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
+              id="creator-handle"
+              placeholder="@yourhandle or profile URL..."
+              value={creatorHandle}
+              onChange={(e) => setCreatorHandle(e.target.value)}
               className="mt-2 h-12 rounded-xl border-orange-200 focus:border-orange-400"
             />
           </div>
           
           <Button 
             onClick={handleAnalyze}
-            disabled={!videoUrl || isAnalyzing}
+            disabled={!creatorHandle || isAnalyzing}
             className="w-full gradient-orange text-white font-semibold h-12 rounded-xl cursor-hover"
           >
-            {isAnalyzing ? "Analyzing..." : "Analyze Content"}
+            {isAnalyzing ? "Analyzing Creator Profile..." : "Analyze Complete Profile"}
           </Button>
           
           {isAnalyzing && (
             <div className="space-y-3">
               <div className="flex justify-between text-sm text-gray-600">
-                <span>Analyzing engagement patterns...</span>
-                <span>67%</span>
+                <span>Analyzing content patterns, audience, and engagement...</span>
+                <span>73%</span>
               </div>
-              <Progress value={67} className="h-3 bg-orange-100" />
+              <Progress value={73} className="h-3 bg-orange-100" />
             </div>
           )}
         </CardContent>
@@ -108,9 +131,41 @@ const DiagnoseTab = () => {
 
       {showResults && (
         <div className="space-y-6 animate-fade-in">
+          {/* Creator Profile Overview */}
+          <Card className="gradient-pastel border-orange-200 rounded-2xl cursor-shadow">
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">{creatorProfile.followers}</div>
+                  <div className="text-sm text-gray-600">Total Followers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">{creatorProfile.avgViews}</div>
+                  <div className="text-sm text-gray-600">Avg Views</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">{creatorProfile.engagementRate}</div>
+                  <div className="text-sm text-gray-600">Engagement Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">{creatorProfile.postingFrequency}</div>
+                  <div className="text-sm text-gray-600">Posting Frequency</div>
+                </div>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="text-sm font-medium text-gray-700">Content Pillars:</span>
+                {creatorProfile.contentPillars.map((pillar, index) => (
+                  <Badge key={index} className="bg-orange-100 text-orange-700 border-orange-200">
+                    {pillar}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
           <h3 className="text-2xl font-bold flex items-center space-x-3">
             <AlertTriangle className="w-6 h-6 text-orange-500" />
-            <span>Performance Issues Detected</span>
+            <span>Profile Performance Issues</span>
           </h3>
           
           {diagnosticResults.map((result, index) => (
@@ -125,7 +180,10 @@ const DiagnoseTab = () => {
                       <h4 className="font-bold text-lg">{result.title}</h4>
                       <span className="text-sm font-semibold text-orange-600">{result.percentage}% impact</span>
                     </div>
-                    <p className="text-gray-600 mb-4">{result.description}</p>
+                    <p className="text-gray-600 mb-2">{result.description}</p>
+                    <div className="p-3 bg-orange-50 rounded-lg border border-orange-100 mb-4">
+                      <p className="text-sm text-gray-700 font-medium">{result.insight}</p>
+                    </div>
                     <div className="mt-4">
                       <Progress value={result.percentage} className="h-3 bg-orange-100" />
                     </div>
@@ -134,6 +192,16 @@ const DiagnoseTab = () => {
               </CardContent>
             </Card>
           ))}
+
+          <Card className="gradient-soft border-orange-200 rounded-2xl cursor-shadow">
+            <CardContent className="pt-8 text-center">
+              <h3 className="font-bold text-xl mb-3">Ready to optimize your creator strategy?</h3>
+              <p className="text-gray-600 mb-6 text-lg">Get personalized recommendations based on your complete profile analysis</p>
+              <Button className="gradient-orange text-white font-semibold px-8 py-3 rounded-xl cursor-hover">
+                View Recommendations
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>
