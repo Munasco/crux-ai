@@ -206,8 +206,8 @@ const CreatorOverview = ({
   };
   // ---------------------------------
 
-  const hasRealData = apiResponse?.success && apiResponse.data?.dashboardData;
-  const realData = hasRealData ? apiResponse.data.dashboardData : null;
+  const hasRealData = apiResponse?.success && apiResponse.data?.avgEngagement;
+  const realData = hasRealData ? apiResponse.data : null;
 
   const creatorStats = hasRealData
     ? {

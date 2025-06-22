@@ -34,16 +34,6 @@ const App = () => (
               />
             }
           />
-          <Route
-            path="/dashboard"
-            element={
-              <DashboardPage
-                children={<Dashboard />}
-                title="Dashboard"
-                subTitle="Dashboard"
-              />
-            }
-          />
           <Route path="/onboarding" element={<OnboardingApp />} />
           <Route path="/instagram-analysis" element={<InstagramAnalysis />} />
           <Route
