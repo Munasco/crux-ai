@@ -25,7 +25,7 @@ const Header = () => {
               </Link>
              
             </nav>
-            <Link to="/dashboard">
+            <Link to="/onboarding">
               <Button className=" bg-orange-50 hover:shadow-lg text-[#210F06] font-medium px-6 py-3 rounded-xl cursor-hover border-0">
                 Try Dashboard
               </Button>

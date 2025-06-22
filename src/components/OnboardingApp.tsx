@@ -5,7 +5,8 @@ import ProfileConnection from "./onboarding/ProfileConnection";
 import DataProcessing from "./onboarding/DataProcessing";
 import CreatorOverview from "./dashboard/CreatorOverview";
 import VideoAnalysis from "./dashboard/VideoAnalysis";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import DashboardView from "./dashboard/Page";
 
 type OnboardingStep = 'platforms' | 'connection' | 'processing' | 'overview' | 'videos';
 
@@ -95,25 +96,10 @@ const OnboardingApp = () => {
           )}
 
           {currentStep === 'overview' && (
-            <div className="space-y-8">
-              <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold mb-4">
-                  Your Creator{" "}
-                  <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-                    Intelligence
-                  </span>
-                </h1>
-                <p className="text-gray-600 text-lg">
-                  Complete analysis of your creator ecosystem across {connectedProfiles.length} platform{connectedProfiles.length !== 1 ? 's' : ''}
-                </p>
-              </div>
-              <CreatorOverview onViewVideoAnalysis={handleViewVideoAnalysis} />
-            </div>
+            <Navigate to="/dashboard" replace />
           )}
 
-          {currentStep === 'videos' && (
-            <VideoAnalysis onBack={handleBackToOverview} />
-          )}
+        
         </div>
       </section>
 

@@ -11,7 +11,7 @@ const Footer = () => {
               Ready to optimize your content?
             </p>
             <button onClick={() => {
-              window.location.href = "/dashboard";
+              window.location.href = "/onboarding";
             }} className="bg-orange-600 text-white px-2 py-2  pr-4 rounded-md flex  items-center gap-2">
               <div className="flex items-center justify-center bg-white text-orange-600 rounded-md p-2">
                 <ArrowRightIcon className="w-4 h-4" />

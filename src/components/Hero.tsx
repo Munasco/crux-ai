@@ -30,7 +30,7 @@ const Hero = () => {
           </p>
 
 
-          <Link to="/dashboard">
+          <Link to="/onboarding">
             <Button size="lg" className="bg-orange-50 text-orange-900 px-10 py-6 text-lg font-semibold rounded-xl cursor-hover cursor-shadow border-0">
               Analyze Your Profile
             </Button>
