@@ -29,7 +29,7 @@ steps:
         "--platform",
         "managed",
         "--set-secrets",
-        "GEMINI_API_KEY=GEMINI_API_KEY:latest",
+        "GEMINI_API_KEY=GEMINI_API_KEY:latest,APIFY_API_TOKEN=APIFY_API_TOKEN:latest",
         "--quiet",
       ]
 
