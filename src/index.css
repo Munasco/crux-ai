@@ -135,4 +135,17 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 40px rgba(255, 107, 53, 0.15);
   }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
