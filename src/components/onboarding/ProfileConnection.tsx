@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Check, ExternalLink, Loader2, AlertCircle, Instagram, Youtube, Linkedin, Twitter } from "lucide-react";
+import { Check, ExternalLink, Loader2, AlertCircle, Instagram, Youtube, Linkedin, Twitter, } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Platform {
   id: string;
@@ -33,7 +34,7 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
       connecting: false
     }))
   );
-  
+
   const [currentStep, setCurrentStep] = useState(0);
 
   function getIcon(id: string) {
@@ -59,9 +60,9 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
   const connectPlatform = async (platformIndex: number, username: string) => {
     if (!username.trim()) return;
 
-    setPlatforms(prev => 
-      prev.map((platform, index) => 
-        index === platformIndex 
+    setPlatforms(prev =>
+      prev.map((platform, index) =>
+        index === platformIndex
           ? { ...platform, connecting: true }
           : platform
       )
@@ -69,9 +70,9 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
 
     // Simulate API connection
     setTimeout(() => {
-      setPlatforms(prev => 
-        prev.map((platform, index) => 
-          index === platformIndex 
+      setPlatforms(prev =>
+        prev.map((platform, index) =>
+          index === platformIndex
             ? { ...platform, connecting: false, connected: true, username }
             : platform
         )
@@ -83,7 +84,7 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
     const connectedProfiles = platforms
       .filter(p => p.connected)
       .map(p => ({ platform: p.id, username: p.username }));
-    
+
     onConnectionComplete(connectedProfiles);
   };
 
@@ -92,8 +93,8 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">
+      <div>
+        <h1 className="text-4xl font-semibold">
           Connect Your{" "}
           <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
             Accounts
@@ -103,12 +104,17 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
           Link your creator profiles to start the deep analysis
         </p>
       </div>
-
+      <div className="flex flex-col gap-2">
+        <div className="text-sm text-gray-600">
+          {connectedCount} of {platforms.length} platforms connected
+        </div>
+        <Progress value={(connectedCount / platforms.length) * 100} className="h-2 bg-orange-100" />
+      </div>
       <div className="space-y-6">
         {platforms.map((platform, index) => {
           const Icon = platform.icon;
           return (
-            <Card key={platform.id} className="glass-effect border-orange-100/50 rounded-2xl">
+            <Card key={platform.id} className=" border border-slate-100 rounded-xl shadow">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-3">
                   <div className={`p-3 rounded-xl bg-gradient-to-br ${platform.color}`}>
@@ -124,8 +130,9 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
                 </CardTitle>
               </CardHeader>
               <CardContent>
+
                 {!platform.connected ? (
-                  <ProfileConnectionForm 
+                  <ProfileConnectionForm
                     platform={platform}
                     onConnect={(username) => connectPlatform(index, username)}
                   />
@@ -135,10 +142,12 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
                       <Check className="w-5 h-5 text-green-600" />
                       <span className="font-medium">@{platform.username}</span>
                     </div>
-                    <Button variant="outline" size="sm" className="border-green-200 text-green-700">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      View Profile
-                    </Button>
+                    <Link to={`https://${platform.id}.com/${platform.username}`} target="_blank">
+                      <Button variant="outline" size="sm" className="border-green-200 text-green-700">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        View Profile
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </CardContent>
@@ -147,21 +156,18 @@ const ProfileConnection = ({ selectedPlatforms, onConnectionComplete }: ProfileC
         })}
       </div>
 
-      <div className="text-center space-y-4">
-        <div className="text-sm text-gray-600">
-          {connectedCount} of {platforms.length} platforms connected
-        </div>
-        <Progress value={(connectedCount / platforms.length) * 100} className="h-2 bg-orange-100" />
-        
-        <Button 
+      <div className=" space-y-4">
+
+
+        <Button
           onClick={handleContinue}
           disabled={!hasConnections}
-          className="gradient-orange text-white font-semibold px-8 py-3 rounded-xl cursor-hover"
+          className="bg-orange-500 text-white font-semibold px-8 py-3 rounded-xl cursor-hover"
           size="lg"
         >
           Start Analysis
         </Button>
-        
+
         {!hasConnections && (
           <p className="text-sm text-gray-500">
             Connect at least one platform to continue
@@ -181,8 +187,8 @@ const ProfileConnectionForm = ({ platform, onConnect }: { platform: Platform; on
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
+    <form onSubmit={handleSubmit} className="flex flex-row items-center gap-4">
+      <div className="flex-1">
         <Label htmlFor={`${platform.id}-username`} className="text-base font-medium">
           {platform.name} Username
         </Label>
@@ -195,11 +201,11 @@ const ProfileConnectionForm = ({ platform, onConnect }: { platform: Platform; on
           disabled={platform.connecting}
         />
       </div>
-      
-      <Button 
+
+      <Button
         type="submit"
         disabled={!username.trim() || platform.connecting}
-        className="w-full gradient-orange text-white font-medium h-12 rounded-xl"
+        className="mt-8 gradient-orange text-white font-medium px-6 py-4 h-12 rounded-xl"
       >
         {platform.connecting ? (
           <>
