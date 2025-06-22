@@ -19,6 +19,9 @@ async function generateDashboardData(username, jobId, db) {
   if (!process.env.GEMINI_API_KEY) {
     return { error: "GEMINI_API_KEY environment variable not set." };
   }
+  if (!process.env.APIFY_API_TOKEN) {
+    throw new Error("APIFY_API_TOKEN environment variable not set.");
+  }
   if (!db) {
     return { error: "Firestore database instance is required." };
   }

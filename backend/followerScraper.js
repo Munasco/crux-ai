@@ -1,45 +1,46 @@
-const { PlaywrightCrawler } = require("crawlee");
+const { ApifyClient } = require("apify-client");
 
 /**
- * Gets the follower count for a given Instagram username.
+ * Gets the follower count for a given Instagram username using Apify actor.
  * @param {string} username - The Instagram username to scrape.
+ * @param {string} apiToken - The Apify API token.
  * @returns {Promise<{followersCount: string}|{error: string}>}
  */
-async function getFollowersCount(username) {
+async function getFollowersCount(username, apiToken) {
   if (!username) {
     return { error: "A username is required." };
   }
+  // Use the provided token or fall back to the environment variable
+  const token = apiToken || process.env.APIFY_API_TOKEN;
+  if (!token) {
+    return {
+      error:
+        "An Apify API token is required (set APIFY_API_TOKEN env variable).",
+    };
+  }
 
-  let followersCount = "0";
-
-  const crawler = new PlaywrightCrawler({
-    requestHandler: async ({ page }) => {
-      try {
-        await page.goto(`https://www.instagram.com/${username}/`);
-
-        // Use the selector logic you provided.
-        const followersLocator = page.getByText(/[0-9,.mMkK]+ followers/);
-
-        // Wait for the element to be visible
-        await followersLocator.waitFor({ state: "visible", timeout: 10000 });
-
-        const textContent = await followersLocator.textContent();
-        if (textContent) {
-          followersCount = textContent.split(" ")[0];
-        }
-      } catch (e) {
-        console.error(
-          `Failed to scrape followers for ${username}: ${e.message}`
-        );
-      }
-    },
-    maxRequestsPerCrawl: 1,
-    headless: true,
+  const client = new ApifyClient({
+    token,
   });
 
-  await crawler.run([`https://www.instagram.com/${username}/`]);
+  const input = {
+    usernames: [username],
+  };
 
-  return { followersCount };
+  try {
+    // Run the Actor and wait for it to finish
+    const run = await client.actor("7RQ4RlfRihUhflQtJ").call(input);
+
+    // Fetch Actor results from the run's dataset (if any)
+    const { items } = await client.dataset(run.defaultDatasetId).listItems();
+    if (items && items.length > 0 && items[0].followersCount !== undefined) {
+      return { followersCount: String(items[0].followersCount) };
+    } else {
+      return { error: "No follower count found in actor results." };
+    }
+  } catch (e) {
+    return { error: `Failed to fetch followers: ${e.message}` };
+  }
 }
 
 module.exports = { getFollowersCount };
