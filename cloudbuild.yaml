@@ -8,7 +8,7 @@ steps:
         "gcr.io/$PROJECT_ID/crux-ai-backend:$BUILD_ID",
         "-f",
         "backend/Dockerfile",
-        ".",
+        "backend",
       ]
 
   # 2. Push the container image to Container Registry
@@ -28,8 +28,8 @@ steps:
         "us-east4",
         "--platform",
         "managed",
-        "--set-env-vars",
-        "GEMINI_API_KEY=$_GEMINI_API_KEY",
+        "--set-secrets",
+        "GEMINI_API_KEY=GEMINI_API_KEY:latest",
         "--quiet",
       ]
 
