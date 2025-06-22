@@ -4,8 +4,7 @@ import Dashboard from "@/components/Dashboard";
 
 const DashboardPage = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div className="min-h-screen">      
       <Dashboard />
     </div>
   );
