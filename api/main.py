@@ -3,15 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Configure CORS
-origins = [
-    "http://localhost:3000",
-    "https://crux-ai-9frc-git-main-munascos-projects.vercel.app"
-]
-
+# Allow all origins for simplicity, since the frontend is on a different domain.
+# For a production application, you should restrict this to your frontend's actual URL.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -19,7 +15,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Hello": "World from the API root"}
 
 @app.get("/test")
 def test_endpoint():
