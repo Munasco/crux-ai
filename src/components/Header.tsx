@@ -23,7 +23,9 @@ const Header = () => {
               <Link to="#how-it-works" className="text-orange-50 font-sans hover:text-orange-500 transition-colors font-medium">
                 How it Works
               </Link>
-             
+              <Link to="/instagram-analysis" className="text-orange-50 font-sans hover:text-orange-500 transition-colors font-medium">
+                Instagram Analysis
+              </Link>
             </nav>
             <Link to="/onboarding">
               <Button className=" bg-orange-50 hover:shadow-lg text-[#210F06] font-medium px-6 py-3 rounded-xl cursor-hover border-0">
