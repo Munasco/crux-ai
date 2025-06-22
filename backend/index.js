@@ -2,10 +2,10 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const {
-  GoogleGenerativeAI,
+  GoogleGenAI,
   createUserContent,
   createPartFromUri,
-} = require("@google/generative-ai");
+} = require("@google/genai");
 const axios = require("axios");
 const tmp = require("tmp");
 const fs = require("fs");
@@ -17,12 +17,6 @@ const port = process.env.PORT || 8080;
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Initialize Gemini AI
-if (!process.env.GEMINI_API_KEY) {
-  throw new Error("GEMINI_API_KEY environment variable not set.");
-}
-const genAI = new GoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -39,6 +33,14 @@ app.post("/api/analyze-video", async (req, res) => {
   if (!video_url) {
     return res.status(400).json({ error: "video_url is required" });
   }
+
+  // Initialize Gemini AI inside the route handler
+  if (!process.env.GEMINI_API_KEY) {
+    return res
+      .status(500)
+      .json({ error: "GEMINI_API_KEY environment variable not set." });
+  }
+  const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   let tempFile;
   try {
