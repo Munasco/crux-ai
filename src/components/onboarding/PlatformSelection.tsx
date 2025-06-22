@@ -1,7 +1,5 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Instagram, Linkedin, Twitter, Youtube, ArrowRight } from "lucide-react";
 
@@ -62,7 +60,7 @@ const PlatformSelection = ({ onPlatformsSelected }: PlatformSelectionProps) => {
   ];
 
   const togglePlatform = (platformId: string) => {
-    setSelectedPlatforms(prev => 
+    setSelectedPlatforms(prev =>
       prev.includes(platformId)
         ? prev.filter(id => id !== platformId)
         : [...prev, platformId]
@@ -76,9 +74,9 @@ const PlatformSelection = ({ onPlatformsSelected }: PlatformSelectionProps) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">
+    <div className="max-w-4xl mx-auto space-y-12 flex flex-col">
+      <div >
+        <h1 className="text-4xl font-bold mb-2">
           Connect Your Creator{" "}
           <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
             Profiles
@@ -89,28 +87,27 @@ const PlatformSelection = ({ onPlatformsSelected }: PlatformSelectionProps) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6  space-x-2 space-y-2">
         {platforms.map((platform) => {
           const Icon = platform.icon;
           const isSelected = selectedPlatforms.includes(platform.id);
-          
+
           return (
-            <Card 
+            <div
               key={platform.id}
-              className={`cursor-pointer transition-all duration-300 hover:shadow-xl ${
-                isSelected 
-                  ? 'ring-2 ring-orange-400 shadow-lg scale-105' 
-                  : 'hover:scale-102'
-              } glass-effect border-orange-100/50 rounded-2xl`}
+              className={`cursor-pointer transition-all duration-300 hover:shadow-xl p-6 ${isSelected
+                ? 'ring-2 ring-orange-400 shadow scale-105'
+                : 'hover:scale-102'
+                } border-2 border-slate-100 rounded-2xl bg-white`}
               onClick={() => togglePlatform(platform.id)}
             >
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${platform.gradient}`}>
+              <div className="pb-2">
+                <div className="flex items-center justify-between ">
+                  <div className="flex flex-col items-start justify-center gap-2">
+                    <div className={`p-3 rounded-md bg-gradient-to-br ${platform.gradient}`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <CardTitle className="text-xl">{platform.name}</CardTitle>
+                    <h3 className="text-2xl font-medium text-[#210F06]">{platform.name}</h3>
                   </div>
                   {isSelected && (
                     <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
@@ -118,8 +115,8 @@ const PlatformSelection = ({ onPlatformsSelected }: PlatformSelectionProps) => {
                     </div>
                   )}
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              </div>
+              <div className="space-y-2">
                 <p className="text-gray-600">{platform.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {platform.metrics.map((metric, index) => (
@@ -128,23 +125,23 @@ const PlatformSelection = ({ onPlatformsSelected }: PlatformSelectionProps) => {
                     </Badge>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           );
         })}
       </div>
 
-      <div className="text-center">
-        <Button 
+      <div>
+        <Button
           onClick={handleContinue}
           disabled={selectedPlatforms.length === 0}
-          className="gradient-orange text-white font-semibold px-8 py-3 rounded-xl cursor-hover"
+          className="bg-orange-500 text-white font-semibold px-8 py-4 rounded-xl cursor-hover"
           size="lg"
         >
           Continue with {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
           <ArrowRight className="ml-3 w-5 h-5" />
         </Button>
-        
+
         {selectedPlatforms.length === 0 && (
           <p className="text-sm text-gray-500 mt-3">
             Select at least one platform to continue

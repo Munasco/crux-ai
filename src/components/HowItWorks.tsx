@@ -1,29 +1,27 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
   const steps = [
     {
-      step: "01",
+      step: "1",
       title: "Upload Your Content",
       description: "Paste a video URL or upload directly. Supports YouTube, TikTok, Instagram, and more.",
       gradient: "from-orange-400 to-red-400"
     },
     {
-      step: "02", 
+      step: "2",
       title: "Get Instant Diagnosis",
       description: "Our AI analyzes engagement patterns, timing, structure, and identifies specific performance issues.",
       gradient: "from-orange-400 to-yellow-400"
     },
     {
-      step: "03",
+      step: "3",
       title: "Receive Prescriptions",
       description: "Get actionable recommendations for fixes, optimal timing, and repurposing strategies.",
       gradient: "from-orange-500 to-pink-400"
     },
     {
-      step: "04",
+      step: "4",
       title: "Execute Workflows",
       description: "Run automated workflows to implement fixes, generate content, and schedule reposts.",
       gradient: "from-orange-400 to-orange-600"
@@ -31,44 +29,36 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 gradient-soft">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-20">
-          <h2 className="text-5xl font-bold mb-6">
-            How{" "}
-            <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-              Crux Works
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+    <section id="how-it-works" className="py-24 mb-12">
+      <div className="container flex flex-row items-start justify-center mx-auto gap-16 px-6">
+        <div className="mb-20">
+          <div className="flex items-center gap-2 mb-8">
+            <div className="w-2 h-2 bg-white rounded-full"></div>
+            <span className="text-lg font-light text-gray-200">How It Works</span>
+          </div>
+          <img src="/logo.png" alt="Crux" className="w-64 h-64 opacity-15" />
+          <p className="text-xl text-[#A27E6D] max-w-3xl leading-relaxed">
             From content upload to optimization in four simple steps
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 relative">
           {steps.map((step, index) => (
             <div key={index} className="relative">
-              <Card className="h-full border-orange-100/50 hover:shadow-xl transition-all duration-300 cursor-hover rounded-2xl glass-effect">
-                <CardHeader className="text-center pb-6">
-                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${step.gradient} flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl shadow-lg`}>
-                    {step.step}
-                  </div>
-                  <CardTitle className="text-xl font-bold">{step.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center text-gray-600 leading-relaxed text-base">
-                    {step.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-              
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
-                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-orange-500" />
+              <div className="h-full border border-[#A27E6D] p-6">
+                <div className="pb-4">
+                  <div className="flex flex-col items-start gap-3">
+                    <div className="text-2xl py-3 px-5 bg-orange-600 font-bold text-white">{step.step}
+                    </div>
+                    <h3 className="text-xl font-semibold tracking-wide text-orange-300">{step.title}</h3>
                   </div>
                 </div>
-              )}
+                <div>
+                  <p className="text-[#A27E6D] leading-relaxed text-base">
+                    {step.description}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>

@@ -1,44 +1,43 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="pt-32 pb-20 gradient-soft min-h-screen flex items-center">
-      <div className="container mx-auto px-6">
+    <section 
+      className="pt-32 pb-20 min-h-screen flex items-center relative overflow-hidden bg-[#210F06]"
+      style={{
+        backgroundImage: 'url(/background.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/40 z-0"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center space-x-2 glass-effect text-orange-700 px-5 py-3 rounded-full text-sm font-medium mb-8 cursor-shadow">
-            <TrendingUp className="w-4 h-4" />
-            <span>AI-Powered Creator Intelligence</span>
-          </div>
-          
-          <h1 className="text-6xl md:text-7xl font-bold leading-tight mb-8">
-            Optimize your entire{" "}
+          <h1 className="text-5xl md:text-[5.6em] font-medium leading-tighter tracking-tighter font-sans text-white mb-4">
+            Optimize your entire{" "} <br />
             <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
               creator ecosystem
             </span>
           </h1>
-          
-          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Deep analytics on your audience, content performance, and growth patterns - 
-            plus strategic workflows to transform your creator profile across all platforms.
+
+          <p className="text-xl text-[#E9D6CB] font-sans mb-12 max-w-xl leading-tight  mx-auto font-thin">
+            Unlock data-driven insights to optimize your creator profile across all platforms.
           </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
-            <Link to="/dashboard">
-              <Button size="lg" className="gradient-orange text-white px-10 py-4 text-lg font-semibold rounded-xl cursor-hover cursor-shadow border-0">
-                Analyze Your Profile
-                <ArrowRight className="ml-3 w-5 h-5" />
-              </Button>
-            </Link>
-            
-            <Button variant="outline" size="lg" className="px-10 py-4 text-lg border-orange-200 hover:bg-orange-50 rounded-xl cursor-hover">
-              <Play className="mr-3 w-5 h-5" />
-              Watch Demo
+
+
+          <Link to="/onboarding">
+            <Button size="lg" className="bg-orange-50 text-orange-900 px-10 py-6 text-lg font-semibold rounded-xl cursor-hover cursor-shadow border-0">
+              Analyze Your Profile
             </Button>
-          </div>
-          
+          </Link>
+
+
+          {/*
           <div className="glass-effect rounded-3xl p-10 cursor-shadow border border-orange-100/30">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               <div className="text-center group cursor-hover">
@@ -74,6 +73,7 @@ const Hero = () => {
               </div>
             </div>
           </div>
+          */}
         </div>
       </div>
     </section>

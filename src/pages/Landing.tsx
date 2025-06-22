@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 const Landing = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#120A04]">
       <Header />
       <Hero />
       <Features />

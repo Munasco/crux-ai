@@ -67,7 +67,7 @@ const DataProcessing = ({ connectedProfiles, onProcessingComplete }: DataProcess
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      <div className="text-center">
+      <div >
         <h1 className="text-4xl font-bold mb-4">
           Building Your Creator{" "}
           <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
@@ -79,7 +79,7 @@ const DataProcessing = ({ connectedProfiles, onProcessingComplete }: DataProcess
         </p>
       </div>
 
-      <Card className="glass-effect border-orange-100/50 rounded-2xl">
+        <Card className="border border-slate-100 rounded-xl shadow">
         <CardContent className="p-8 space-y-8">
           <div className="space-y-6">
             {steps.map((step, index) => {
