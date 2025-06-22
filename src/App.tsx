@@ -12,6 +12,7 @@ import DiagnoseTab from "./pages/dashboard/DiagnoseTab";
 import PrescribeTab from "./pages/dashboard/PrescribeTab";
 import RemediateTab from "./pages/dashboard/RemediateTab";
 import VideoAnalysis from "./pages/dashboard/VideoAnalysis";
+import SponsorTab from "./pages/dashboard/SponsorTab";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/dashboard/prescribe" element={<DashboardPage children={<PrescribeTab />} title="Prescribe" subTitle="Prescribe" />} />
               <Route path="/dashboard/remediate" element={<DashboardPage children={<RemediateTab />} title="Remediate" subTitle="Remediate" />} />
               <Route path="/dashboard/videos" element={<DashboardPage children={<VideoAnalysis onBack={() => { }} />} title="Videos" subTitle="Videos" />} />
+              <Route path="/dashboard/sponsor" element={<DashboardPage children={<SponsorTab />} title="Sponsorships" subTitle="Sponsorships" />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
         </Routes>
