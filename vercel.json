@@ -8,9 +8,9 @@
     },
     {
       "src": "package.json",
-      "use": "@vercel/next",
+      "use": "@vercel/static-build",
       "config": {
-        "distDir": ".next"
+        "distDir": "dist"
       }
     }
   ],
@@ -24,7 +24,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ]
 }
