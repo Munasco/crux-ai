@@ -4,9 +4,9 @@ import PlatformSelection from "./onboarding/PlatformSelection";
 import ProfileConnection from "./onboarding/ProfileConnection";
 import DataProcessing from "./onboarding/DataProcessing";
 import CreatorOverview from "./dashboard/CreatorOverview";
-import VideoAnalysis from "./dashboard/VideoAnalysis";
+import VideoAnalysis from "../pages/dashboard/VideoAnalysis";
 import { Link, Navigate } from "react-router-dom";
-import DashboardView from "./dashboard/Page";
+
 
 type OnboardingStep = 'platforms' | 'connection' | 'processing' | 'overview' | 'videos';
 

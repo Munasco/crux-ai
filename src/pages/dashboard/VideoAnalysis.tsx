@@ -1,17 +1,31 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Play, TrendingUp, TrendingDown, Eye, Heart, MessageCircle, Share, Clock, Target, Zap } from "lucide-react";
+import { ArrowLeft, Play, TrendingUp, TrendingDown, Eye, Heart, MessageCircle, Share, Clock, Target, Zap, Upload } from "lucide-react";
+import { VideoUploadModal } from "@/components/VideoUploadModal";
+import { VideoAnalysisLoading } from "@/components/VideoAnalysisLoading";
+import { VideoAnalysisResults } from "@/components/VideoAnalysisResults";
 
 interface VideoAnalysisProps {
   onBack: () => void;
 }
+      
+type AnalysisState = 'list' | 'upload' | 'loading' | 'results';
+
+interface AnalysisResult {
+  title: string;
+  performance: string;
+  insights: string[];
+  recommendations: string[];
+}
 
 const VideoAnalysis = ({ onBack }: VideoAnalysisProps) => {
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [analysisState, setAnalysisState] = useState<AnalysisState>('list');
+  const [videoSource, setVideoSource] = useState<File | string | null>(null);
+  const [analysisResults, setAnalysisResults] = useState<AnalysisResult | null>(null);
 
   const videos = [
     {
@@ -20,7 +34,7 @@ const VideoAnalysis = ({ onBack }: VideoAnalysisProps) => {
       platform: "YouTube",
       thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300&h=200&fit=crop",
       views: "45.2K",
-      likes: "2.1K", 
+      likes: "2.1K",
       comments: "234",
       shares: "156",
       engagement: "8.7%",
@@ -125,28 +139,83 @@ const VideoAnalysis = ({ onBack }: VideoAnalysisProps) => {
     }
   };
 
+  const handleUploadClick = () => {
+    setAnalysisState('upload');
+  };
+
+  const handleUpload = (source: File | string) => {
+    setVideoSource(source);
+    setAnalysisState('loading');
+  };
+
+  const handleAnalysisComplete = (results: AnalysisResult) => {
+    setAnalysisResults(results);
+    setAnalysisState('results');
+  };
+
+  const handleBackToList = () => {
+    setAnalysisState('list');
+    setSelectedVideo(null);
+    setVideoSource(null);
+    setAnalysisResults(null);
+  };
+
+  const handleBackToLoading = () => {
+    setAnalysisState('loading');
+  };
+
+  // Render different states
+  if (analysisState === 'upload') {
+    return (
+      <VideoUploadModal
+        isOpen={true}
+        onClose={() => setAnalysisState('list')}
+        onUpload={handleUpload}
+      />
+    );
+  }
+
+  if (analysisState === 'loading' && videoSource) {
+    return (
+      <VideoAnalysisLoading
+        videoSource={videoSource}
+        onComplete={handleAnalysisComplete}
+      />
+    );
+  }
+
+  if (analysisState === 'results' && analysisResults && videoSource) {
+    return (
+      <VideoAnalysisResults
+        analysis={analysisResults}
+        videoSource={videoSource}
+        onBack={handleBackToList}
+      />
+    );
+  }
+
   if (selectedVideo) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div className="flex items-center space-x-4">
-          <Button 
-            onClick={() => setSelectedVideo(null)} 
-            variant="outline" 
-            className="border-orange-200 text-orange-600 hover:bg-orange-50 rounded-xl"
+          <Button
+            onClick={() => setSelectedVideo(null)}
+            variant="outline"
+            className="border-orange-200 text-orange-600 hover:bg-orange-50 rounded-sm"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Videos
           </Button>
-          <h2 className="text-2xl font-bold">Video Analysis</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">Video Analysis</h2>
         </div>
 
-        <Card className="glass-effect border-orange-100/50 rounded-2xl">
+        <Card className="border-bg-sidebar rounded-lg shadow-none">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-1">
                 <div className="relative rounded-xl overflow-hidden mb-4">
-                  <img 
-                    src={selectedVideo.thumbnail} 
+                  <img
+                    src={selectedVideo.thumbnail}
                     alt={selectedVideo.title}
                     className="w-full aspect-video object-cover"
                   />
@@ -233,7 +302,7 @@ const VideoAnalysis = ({ onBack }: VideoAnalysisProps) => {
 
         {/* Insights */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="glass-effect border-orange-100/50 rounded-2xl">
+          <Card className="border-bg-sidebar rounded-lg shadow-none">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-green-600" />
@@ -252,7 +321,7 @@ const VideoAnalysis = ({ onBack }: VideoAnalysisProps) => {
             </CardContent>
           </Card>
 
-          <Card className="glass-effect border-orange-100/50 rounded-2xl">
+          <Card className="border-bg-sidebar rounded-lg shadow-none">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Zap className="w-5 h-5 text-orange-600" />
@@ -276,76 +345,76 @@ const VideoAnalysis = ({ onBack }: VideoAnalysisProps) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold mb-2">Video Analysis</h2>
-          <p className="text-gray-600">Deep dive into why each piece of content worked or didn't</p>
+          <h2 className="text-3xl font-semibold text-slate-900">Video Analysis</h2>
+          <p className="text-slate-500">Deep dive into why each piece of content worked or didn't</p>
         </div>
-        <Button 
-          onClick={onBack}
-          variant="outline" 
-          className="border-orange-200 text-orange-600 hover:bg-orange-50 rounded-xl"
+
+        <Button
+          onClick={handleUploadClick}
+          variant="outline"
+          className="border-orange-200 text-orange-600 hover:bg-orange-50 rounded-sm bg-orange-50"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Overview
+          <Upload className="w-4 h-4 mr-2" />
+          Upload Video
         </Button>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid grid-cols-3 gap-6">
         {videos.map((video) => (
-          <Card 
-            key={video.id} 
-            className="glass-effect border-orange-100/50 rounded-2xl hover:shadow-xl transition-all cursor-pointer"
+          <Card
+            key={video.id}
+            className="border-bg-sidebar rounded-lg shadow-none cursor-pointer hover:shadow-lg transition-all duration-300"
             onClick={() => setSelectedVideo(video)}
           >
-            <CardContent className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <CardContent className="p-2">
+              <div className="grid grid-cols-1  gap-6">
                 <div className="relative">
-                  <img 
-                    src={video.thumbnail} 
+                  <img
+                    src={video.thumbnail}
                     alt={video.title}
-                    className="w-full aspect-video object-cover rounded-xl"
+                    className="w-full aspect-video object-cover rounded-lg"
                   />
                   <div className="absolute bottom-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs">
                     {video.duration}
                   </div>
                 </div>
 
-                <div className="md:col-span-2 space-y-3">
+                <div className="space-y-3 p-2">
                   <div className="flex items-start justify-between">
                     <h3 className="font-bold text-lg leading-tight">{video.title}</h3>
                     <Badge className={getPlatformColor(video.platform)}>
                       {video.platform}
                     </Badge>
                   </div>
-                  <p className="text-gray-600 text-sm">{video.summary}</p>
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
                     <span>{video.uploadDate}</span>
                     <Badge className={getPerformanceColor(video.performance)}>
                       {video.performance}
                     </Badge>
                   </div>
+                  <p className="text-gray-600 text-sm">{video.summary}</p>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="text-center p-2 bg-orange-50 rounded-lg">
-                      <div className="font-semibold text-orange-600">{video.views}</div>
-                      <div className="text-xs text-gray-600">Views</div>
-                    </div>
-                    <div className="text-center p-2 bg-orange-50 rounded-lg">
-                      <div className="font-semibold text-orange-600">{video.engagement}</div>
-                      <div className="text-xs text-gray-600">Engagement</div>
-                    </div>
-                  </div>
-                  
+                <div className="space-y-4 p-2">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <span>Hook Score</span>
                       <span>{video.hookScore}/100</span>
                     </div>
-                    <Progress value={video.hookScore} className="h-1" />
+                    <Progress value={video.hookScore} className="h-1.5" />
+                  </div>
+                  <div className="flex flex-row gap-3 w-full">
+                    <div className="text-center p-2 bg-orange-50 rounded-lg w-full">
+                      <div className="font-semibold text-orange-600">{video.views}</div>
+                      <div className="text-xs text-gray-600">Views</div>
+                    </div>
+                    <div className="text-center p-2 bg-orange-50 rounded-lg w-full">
+                      <div className="font-semibold text-orange-600">{video.engagement}</div>
+                      <div className="text-xs text-gray-600">Engagement</div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -87,15 +87,15 @@ const PrescribeTab = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Strategic Recommendations</h2>
-        <p className="text-gray-600 text-lg">Data-driven strategies to optimize your entire creator ecosystem</p>
+    <div className="space-y-8 p-6">
+      <div className=" mb-12">
+        <h2 className="text-3xl font-semibold text-slate-900">Strategic Recommendations</h2>
+        <p className="text-slate-500">Data-driven strategies to optimize your entire creator ecosystem</p>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {recommendations.map((rec, index) => (
-          <Card key={index} className="hover:shadow-xl transition-all duration-300 cursor-hover glass-effect border-orange-100/50 rounded-2xl">
+          <Card key={index} className="border-bg-sidebar rounded-lg shadow-none ">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
@@ -123,11 +123,11 @@ const PrescribeTab = () => {
               <div className="flex space-x-3">
                 <Button 
                   onClick={() => handleAction(rec.action)}
-                  className="gradient-orange text-white font-medium rounded-xl cursor-hover px-6"
+                  className="text-white font-medium rounded-sm bg-orange-600 px-6"
                 >
                   {rec.action}
                 </Button>
-                <Button variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 rounded-xl">
+                <Button variant="outline" className="border-orange-200 text-orange-600 hover:bg-orange-50 rounded-sm">
                   <Copy className="w-4 h-4 mr-2" />
                   Save Strategy
                 </Button>
@@ -137,15 +137,7 @@ const PrescribeTab = () => {
         ))}
       </div>
 
-      <Card className="gradient-pastel border-orange-200 rounded-2xl cursor-shadow">
-        <CardContent className="pt-8 text-center">
-          <h3 className="font-bold text-xl mb-3">Ready to implement these strategies?</h3>
-          <p className="text-gray-600 mb-6 text-lg">Move to Remediate to execute these optimization workflows</p>
-          <Button className="gradient-orange text-white font-semibold px-8 py-3 rounded-xl cursor-hover">
-            Execute Strategies
-          </Button>
-        </CardContent>
-      </Card>
+      
     </div>
   );
 };
