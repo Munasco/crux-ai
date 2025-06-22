@@ -11,10 +11,10 @@ interface CreatorOverviewProps {
 
 const CreatorOverview = ({ onViewVideoAnalysis }: CreatorOverviewProps) => {
   const creatorStats = {
-    totalFollowers: "127.3K",
+    totalFollowers: "3.2K",
     avgEngagement: "4.7%",
-    totalViews: "2.1M",
-    contentPieces: 156,
+    totalViews: "2.1K",
+    contentPieces: 15,
     platforms: ["Instagram", "YouTube", "LinkedIn"]
   };
 
@@ -77,25 +77,25 @@ const CreatorOverview = ({ onViewVideoAnalysis }: CreatorOverviewProps) => {
     <div className="space-y-8">
       {/* Creator Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="glass-effect border-orange-100/50 rounded-2xl">
+        <Card className=" border-bg-sidebar rounded-lg shadow-none">
           <CardContent className="p-6 text-center">
             <div className="text-2xl font-bold text-orange-600 mb-1">{creatorStats.totalFollowers}</div>
             <div className="text-sm text-gray-600">Total Followers</div>
           </CardContent>
         </Card>
-        <Card className="glass-effect border-orange-100/50 rounded-2xl">
+        <Card className=" border-bg-sidebar rounded-lg shadow-none">
           <CardContent className="p-6 text-center">
             <div className="text-2xl font-bold text-orange-600 mb-1">{creatorStats.avgEngagement}</div>
             <div className="text-sm text-gray-600">Avg Engagement</div>
           </CardContent>
         </Card>
-        <Card className="glass-effect border-orange-100/50 rounded-2xl">
+        <Card className=" border-bg-sidebar rounded-lg shadow-none">
           <CardContent className="p-6 text-center">
             <div className="text-2xl font-bold text-orange-600 mb-1">{creatorStats.totalViews}</div>
             <div className="text-sm text-gray-600">Total Views</div>
           </CardContent>
         </Card>
-        <Card className="glass-effect border-orange-100/50 rounded-2xl">
+                <Card className=" border-bg-sidebar rounded-lg shadow-none">
           <CardContent className="p-6 text-center">
             <div className="text-2xl font-bold text-orange-600 mb-1">{creatorStats.contentPieces}</div>
             <div className="text-sm text-gray-600">Content Pieces</div>
@@ -103,81 +103,87 @@ const CreatorOverview = ({ onViewVideoAnalysis }: CreatorOverviewProps) => {
         </Card>
       </div>
 
-      {/* Strengths */}
-      <Card className="glass-effect border-orange-100/50 rounded-2xl">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingUp className="w-5 h-5 text-green-600" />
-            <span>Your Strengths</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {strengths.map((strength, index) => {
-            const Icon = strength.icon;
-            return (
-              <div key={index} className="flex items-center space-x-4 p-4 rounded-xl border border-gray-100">
-                <div className={`p-3 rounded-xl ${strength.bgColor}`}>
-                  <Icon className={`w-5 h-5 ${strength.color}`} />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold">{strength.title}</h4>
-                    <Badge className="bg-green-100 text-green-700 border-green-200">
-                      {strength.score}/100
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-gray-600">{strength.description}</p>
-                  <Progress value={strength.score} className="h-2 mt-2 bg-gray-100" />
-                </div>
-              </div>
-            );
-          })}
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-      {/* Weaknesses */}
-      <Card className="glass-effect border-orange-100/50 rounded-2xl">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <TrendingDown className="w-5 h-5 text-red-600" />
-            <span>Areas for Improvement</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {weaknesses.map((weakness, index) => {
-            const Icon = weakness.icon;
-            return (
-              <div key={index} className="flex items-center space-x-4 p-4 rounded-xl border border-gray-100">
-                <div className={`p-3 rounded-xl ${weakness.bgColor}`}>
-                  <Icon className={`w-5 h-5 ${weakness.color}`} />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold">{weakness.title}</h4>
-                    <Badge className="bg-red-100 text-red-700 border-red-200">
-                      {weakness.score}/100
-                    </Badge>
+        {/* Strengths */}
+        <Card className=" border-bg-sidebar rounded-lg shadow-none">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+              <span>Your Strengths</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {strengths.map((strength, index) => {
+              const Icon = strength.icon;
+              return (
+                <div key={index} className="flex items-center space-x-4 p-4 rounded-xl border border-gray-100">
+                  <div className={`p-3 rounded-xl ${strength.bgColor}`}>
+                    <Icon className={`w-5 h-5 ${strength.color}`} />
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">{weakness.description}</p>
-                  <div className="p-2 bg-orange-50 rounded-lg border border-orange-200">
-                    <p className="text-xs text-orange-700 font-medium">💡 {weakness.improvement}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold">{strength.title}</h4>
+                      <Badge className="bg-green-100 text-green-700 border-green-200">
+                        {strength.score}/100
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-gray-600">{strength.description}</p>
+                    <Progress value={strength.score} className="h-2 mt-2 bg-gray-100" />
                   </div>
-                  <Progress value={weakness.score} className="h-2 mt-2 bg-gray-100" />
                 </div>
-              </div>
-            );
-          })}
-        </CardContent>
-      </Card>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        {/* Weaknesses */}
+        <Card className=" border-bg-sidebar rounded-lg shadow-none">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <TrendingDown className="w-5 h-5 text-red-600" />
+              <span>Areas for Improvement</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {weaknesses.map((weakness, index) => {
+              const Icon = weakness.icon;
+              return (
+                <div key={index} className="flex items-start space-x-4 p-4 rounded-xl border border-gray-100">
+                  <div className={`p-3 rounded-xl ${weakness.bgColor}`}>
+                    <Icon className={`w-5 h-5 ${weakness.color}`} />
+                  </div>
+                  <div className="flex-1 space-y-4">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-semibold">{weakness.title}</h4>
+                        <Badge className="bg-red-100 text-red-700 border-red-200">
+                          {weakness.score}/100
+                        </Badge>
+                      </div>
+
+                      <p className="text-sm text-gray-600 mb-4">{weakness.description}</p>
+                    </div>
+                    <div className="p-2 mb-3 bg-orange-50 rounded-lg border border-orange-200">
+                      <p className="text-xs text-orange-700 font-medium">💡 {weakness.improvement}</p>
+                    </div>
+                    <Progress value={weakness.score} className="h-2 mt-2 bg-gray-100" />
+                  </div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Recent Performance */}
-      <Card className="glass-effect border-orange-100/50 rounded-2xl">
+      <Card className=" border-bg-sidebar rounded-lg shadow-none">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Recent Content Performance</CardTitle>
-            <Button 
+            <Button
               onClick={onViewVideoAnalysis}
-              className="gradient-orange text-white font-medium rounded-xl"
+              className=" text-white font-medium rounded-sm bg-orange-600 hover:bg-orange-700 transition-all duration-300"
             >
               Analyze Individual Videos
             </Button>
@@ -200,9 +206,8 @@ const CreatorOverview = ({ onViewVideoAnalysis }: CreatorOverviewProps) => {
                     <div className="font-semibold">{item.engagement}</div>
                     <div className="text-xs text-gray-500">Engagement</div>
                   </div>
-                  <div className={`flex items-center space-x-1 ${
-                    item.trend === 'up' ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <div className={`flex items-center space-x-1 ${item.trend === 'up' ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {item.trend === 'up' ? (
                       <TrendingUp className="w-4 h-4" />
                     ) : (
