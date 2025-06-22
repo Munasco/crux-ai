@@ -1,4 +1,4 @@
-import CreatorOverview from "@/components/dashboard/CreatorOverview";
+import CreatorOverview from "@/pages/dashboard/CreatorOverview";
 import VideoAnalysis from "./VideoAnalysis";
 import { useState } from "react";
 import { useParams } from "react-router-dom";

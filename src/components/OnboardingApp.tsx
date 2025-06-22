@@ -2,7 +2,7 @@ import { useState } from "react";
 import PlatformSelection from "./onboarding/PlatformSelection";
 import ProfileConnection from "./onboarding/ProfileConnection";
 import DataProcessing from "./onboarding/DataProcessing";
-import CreatorOverview from "./dashboard/CreatorOverview";
+import CreatorOverview from "../pages/dashboard/CreatorOverview";
 import VideoAnalysis from "../pages/dashboard/VideoAnalysis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 

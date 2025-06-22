@@ -274,11 +274,11 @@ const CreatorOverview = ({
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-6">
       {/* Success Indicator for Real Data */}
       {hasRealData && (
         <Card className="border-green-200 bg-green-50 rounded-2xl">
-          <CardContent className="pt-4 text-center">
+          <CardContent className="pt-4 ">
             <div className="flex items-center justify-center gap-2 text-green-700">
               <CheckCircle className="h-5 w-5" />
               <span className="font-medium">
