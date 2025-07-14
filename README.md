@@ -1,73 +1,131 @@
-# Welcome to your Lovable project
+# Crux AI - Content Creator Intelligence Platform
 
-## Project info
+📖 **About the Project**
 
-**URL**: https://lovable.dev/projects/ad459420-32e4-4f30-a9a8-8bf506197bf9
+Crux was built out of a real frustration. I'm a content creator myself, just starting out. I don't post every day, but even with one video every 2 weeks, I noticed that my retention drops off fast. Views decline, engagement slows, and I'm left wondering what went wrong.
 
-## How can I edit this code?
+This isn't just a personal problem. It's something creators across platforms struggle with. Whether it's small business owners trying to optimise Instagram content or influencers trying to improve their earnings, the problem is the same. People don't always know what's working, what's not, and how to improve.
 
-There are several ways of editing your application.
+Crux exists to fix that. It helps creators:
 
-**Use Lovable**
+- **Understand what they do well**
+- **Identify where they're falling short**
+- **Take clear next steps to grow faster**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ad459420-32e4-4f30-a9a8-8bf506197bf9) and start prompting.
+Crux provides a performance diagnosis and pairs it with strategic recommendations and execution workflows. It's not just about tracking views. It's about becoming a smarter, more efficient creator.
 
-Changes made via Lovable will be committed automatically to this repo.
+🔧 **How We Built It**
 
-**Use your preferred IDE**
+We used:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **React** for the frontend interface
+- **Tailwind CSS** and **shadcn/ui** for styling and components
+- **Vite** + **TypeScript** as our build system and development environment
+- **React Router** for navigation and routing logic
+- **PostgreSQL** for storing user and video data
+- **Google AI Studio** and **OpenAI** for generating insights and prescriptions
+- **Node.js** backend for data processing and API endpoints
+- **Python API** for additional data analysis capabilities
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+We started with basic upload and link parsing, then built out the video analysis pipeline. The UI was rebuilt in less than a day to create a clean split-view between the video data and AI-generated insights. We also integrated a sponsorship matching engine that scans similar creators and connects users to brands based on their niche and content style.
 
-Follow these steps:
+🚧 **Challenges We Faced**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Getting the backend to deploy properly with PostgreSQL
+- Debugging platform-specific video data extraction
+- Building a real-time progress system with smooth loading feedback
+- Designing a layout that feels intuitive and fast for creators
+- Prompting the AI in a way that delivers clear, non-generic suggestions
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+🧠 **What We Learned**
 
-# Step 3: Install the necessary dependencies.
-npm i
+- A full UI overhaul is very possible within a day when the structure is solid
+- Video analysis is complex but achievable with the right tools and focus
+- Real-time feedback changes how creators understand their content
+- Good AI prompts are everything when trying to give creators useful insights
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- PostgreSQL database (for backend functionality)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/crux-ai.git
+
+# Navigate to the project directory
+cd crux-ai
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Backend Setup
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Navigate to the backend directory
+cd backend
 
-**Use GitHub Codespaces**
+# Install backend dependencies
+npm install
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Start the backend server
+npm start
+```
 
-## What technologies are used for this project?
+### API Setup
 
-This project is built with:
+```bash
+# Navigate to the API directory
+cd api
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+# Install Python dependencies
+pip install -r requirements.txt
 
-## How can I deploy this project?
+# Start the API server
+python main.py
+```
 
-Simply open [Lovable](https://lovable.dev/projects/ad459420-32e4-4f30-a9a8-8bf506197bf9) and click on Share -> Publish.
+## 📱 Features
 
-## Can I connect a custom domain to my Lovable project?
+- **Multi-Platform Analysis**: Connect Instagram, YouTube, LinkedIn, and Twitter/X accounts
+- **Video Performance Analysis**: Deep dive into retention curves, engagement patterns, and content structure
+- **AI-Powered Insights**: Get specific, actionable recommendations for content improvement
+- **Brand Matching**: Discover sponsorship opportunities with brands in your niche
+- **Content Optimization**: Automated workflows for improving content performance
+- **Real-time Dashboard**: Track your creator metrics and progress over time
 
-Yes, you can!
+## 🛠️ Tech Stack
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend**: Node.js, Express
+- **Database**: PostgreSQL, Firebase
+- **AI/ML**: Google AI Studio, OpenAI APIs
+- **Deployment**: Vercel (frontend), Google Cloud (backend)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📊 Usage
+
+1. **Onboarding**: Select your platforms and connect your profiles
+2. **Analysis**: Upload videos or connect your existing content
+3. **Insights**: Review AI-generated performance analysis and recommendations
+4. **Optimization**: Implement suggested improvements and track results
+5. **Monetization**: Discover brand partnerships through our matching engine
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+Crux is just getting started. We're excited to keep improving it and see how creators use it to grow faster, pitch smarter, and build with clarity.
