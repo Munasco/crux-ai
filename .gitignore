@@ -26,3 +26,8 @@ backend/venv/
 *.sln
 *.sw?
 .vercel
+  
+# Sensitive files  
+.env  
+backend/serviceAccountKey.json  
+backend/instagram_results.json 
