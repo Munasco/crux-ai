@@ -31,3 +31,4 @@ backend/venv/
 .env  
 backend/serviceAccountKey.json  
 backend/instagram_results.json 
+follower-count-scraper/

@@ -19,7 +19,7 @@ async function scrapeInstagram(url) {
     const input = {
       directUrls: [url],
       resultsType: "posts",
-      resultsLimit: 200,
+      resultsLimit: 10,
       searchType: "hashtag",
       searchLimit: 1,
       addParentData: false,

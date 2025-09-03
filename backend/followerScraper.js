@@ -29,7 +29,7 @@ async function getFollowersCount(username, apiToken) {
 
   try {
     // Run the Actor and wait for it to finish
-    const run = await client.actor("7RQ4RlfRihUhflQtJ").call(input);
+    const run = await client.actor("DNAdjmmIXMpBcJ9Ud").call(input);
 
     // Fetch Actor results from the run's dataset (if any)
     const { items } = await client.dataset(run.defaultDatasetId).listItems();
