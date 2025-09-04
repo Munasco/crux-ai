@@ -5,11 +5,13 @@ import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import { Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, Clock } from "lucide-react";
+import { useToast } from "../hooks/use-toast";
 
 export const DashboardGenerator: React.FC = () => {
   const [username, setUsername] = useState("");
   const [currentJobId, setCurrentJobId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const { generateDashboard, isGenerating, generateError } = useDashboardGeneration();
   
@@ -22,9 +24,20 @@ export const DashboardGenerator: React.FC = () => {
     generateDashboard(username, {
       onSuccess: (data) => {
         setCurrentJobId(data.jobId);
+        // Show duration notification
+        toast({
+          title: "Analysis Started! 🚀",
+          description: "This process typically takes 3-5 minutes. We'll analyze your Instagram data, follower metrics, and generate AI-powered insights in real-time.",
+          duration: 8000, // Show for 8 seconds
+        });
       },
       onError: (error) => {
         console.error("Failed to start generation:", error);
+        toast({
+          title: "Failed to Start Analysis",
+          description: error.message || "Please try again.",
+          variant: "destructive",
+        });
       },
     });
   };
@@ -89,6 +102,20 @@ export const DashboardGenerator: React.FC = () => {
           )}
         </CardContent>
       </Card>
+
+      {currentJobId && (
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center gap-3">
+          <Clock className="h-5 w-5 text-blue-600 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-blue-900">
+              Analysis in Progress
+            </p>
+            <p className="text-xs text-blue-700">
+              This typically takes 3-5 minutes. You can watch the real-time progress below.
+            </p>
+          </div>
+        </div>
+      )}
 
       {currentJobId && (statusData || sseError) && (
         <Card>

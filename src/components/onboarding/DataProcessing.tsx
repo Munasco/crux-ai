@@ -11,6 +11,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useDashboardGeneration, useSSEDashboardStatus } from "../../hooks/useDashboardGeneration";
+import { useToast } from "../../hooks/use-toast";
 
 interface ConnectedProfile {
   platform: string;
@@ -32,6 +33,7 @@ const DataProcessing = ({
   const [progress, setProgress] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [currentJobId, setCurrentJobId] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const { generateDashboard, isGenerating, generateError } = useDashboardGeneration();
   
@@ -70,9 +72,20 @@ const DataProcessing = ({
       generateDashboard(cleanUsername, {
         onSuccess: (data) => {
           setCurrentJobId(data.jobId);
+          // Show duration notification
+          toast({
+            title: "Building Your Creator Intelligence! 🧠",
+            description: "We're analyzing your content patterns and engagement. This process takes 3-5 minutes and you can watch the real-time progress.",
+            duration: 10000, // Show longer in onboarding
+          });
         },
         onError: (error) => {
           console.error("Failed to start analysis:", error);
+          toast({
+            title: "Analysis Failed to Start",
+            description: error.message || "Please try again.",
+            variant: "destructive",
+          });
         },
       });
     }
@@ -140,6 +153,12 @@ const DataProcessing = ({
           {connectedProfiles.length !== 1 ? "s" : ""} to create your
           personalized insights
         </p>
+        <div className="flex items-center gap-2 mt-3 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+          <Loader2 className="h-4 w-4 text-orange-600 animate-spin" />
+          <span className="text-sm text-orange-800 font-medium">
+            Estimated time: 3-5 minutes
+          </span>
+        </div>
       </div>
 
       <Card className="border border-slate-100 rounded-xl shadow">
