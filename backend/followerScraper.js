@@ -42,9 +42,9 @@ async function getFollowersCount(username, apiToken) {
 
     if (items && items.length > 0) {
       const result = items[0];
-      if (result.followerCount !== undefined && result.followerCount !== null) {
+      if (result.followers !== undefined && result.followers !== null) {
         return {
-          followersCount: String(result.followerCount),
+          followersCount: String(result.followers),
           username: result.username,
           success: result.success,
         };
