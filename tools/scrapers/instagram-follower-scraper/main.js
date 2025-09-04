@@ -46,7 +46,8 @@ const crawler = new PlaywrightCrawler({
     // Simple settings to match the article
     headless: true, // Keep headless for faster execution
     maxRequestsPerCrawl: instagramUrls.length,
-    requestHandlerTimeoutSecs: 60,
+    requestHandlerTimeoutSecs: 120, // Give more time for Instagram to load
+    navigationTimeoutSecs: 60, // More time for navigation
     autoscaledPoolOptions: {
         minConcurrency: 1,
         maxConcurrency: 1,
