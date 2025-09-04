@@ -41,7 +41,7 @@ if (instagramUrls.length === 0) {
 const proxyConfiguration = await Actor.createProxyConfiguration();
 
 const crawler = new PlaywrightCrawler({
-    // proxyConfiguration, // Disable for now to speed up testing
+    proxyConfiguration, // Enable proxy to help avoid Instagram blocking
     requestHandler: router,
     // Simple settings to match the article
     headless: true, // Keep headless for faster execution
@@ -52,6 +52,22 @@ const crawler = new PlaywrightCrawler({
         minConcurrency: 1,
         maxConcurrency: 1,
     },
+    // Add browser stealth options to evade Instagram detection
+    launchContext: {
+        launchOptions: {
+            args: [
+                '--disable-blink-features=AutomationControlled',
+                '--no-first-run',
+                '--disable-default-apps',
+                '--disable-dev-shm-usage',
+                '--no-sandbox'
+            ]
+        }
+    },
+    // Use realistic user agent
+    preNavigationHooks: [async ({ request, page }) => {
+        await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    }]
 });
 
 await crawler.run(instagramUrls); // provides the crawler the list of starting urls
