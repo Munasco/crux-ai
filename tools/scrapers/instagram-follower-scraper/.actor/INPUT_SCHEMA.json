@@ -1,31 +1,16 @@
 {
-  "title": "Input schema",
-  "description": "Configure which URLs to scrape for follower counts",
+  "title": "Instagram Follower Scraper",
+  "description": "Scrape follower counts from Instagram profiles",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
     "urls": {
-      "title": "URLs to scrape",
-      "type": "array",
-      "description": "List of social media profile URLs to scrape for follower counts",
-      "items": {
-        "type": "string",
-        "title": "Profile URL",
-        "description": "URL of a social media profile (Twitter, Instagram, LinkedIn, YouTube, TikTok)"
-      },
-      "minItems": 1,
-      "maxItems": 100
-    },
-    "platforms": {
-      "title": "Platforms",
-      "type": "array",
-      "description": "Optional: Specify which platforms to focus on",
-      "items": {
-        "type": "string",
-        "enum": ["twitter", "instagram", "linkedin", "youtube", "tiktok"]
-      },
-      "uniqueItems": true
+      "title": "Instagram URLs",
+      "type": "string",
+      "description": "Instagram profile URLs to scrape for follower counts (one per line)",
+      "editor": "textarea",
+      "example": "https://www.instagram.com/humansofny/\nhttps://www.instagram.com/cristiano/\nhttps://www.instagram.com/selenagomez/"
     }
   },
-  "required": ["urls"]
+  "required": []
 }

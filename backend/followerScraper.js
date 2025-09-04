@@ -29,7 +29,7 @@ async function getFollowersCount(username, apiToken) {
     : `https://instagram.com/${username.replace('@', '')}`;
 
   const input = {
-    urls: instagramUrl, // Our scraper expects URLs in string format (one per line)
+    urls: [instagramUrl], // Our scraper expects URLs as an array
   };
 
   try {
