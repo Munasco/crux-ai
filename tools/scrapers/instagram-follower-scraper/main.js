@@ -1,5 +1,5 @@
 import { Actor } from 'apify';
-import { launchPuppeteer } from 'apify';
+import { launchPuppeteer } from 'crawlee';
 
 await Actor.main(async () => {
     console.log('Starting Instagram follower count scraper...');
@@ -28,7 +28,7 @@ await Actor.main(async () => {
     
     console.log('Processing Instagram URLs:', instagramUrls);
     
-    // Launch Puppeteer
+    // Launch Puppeteer via Crawlee
     const browser = await launchPuppeteer({
         headless: true,
         launchOptions: {
