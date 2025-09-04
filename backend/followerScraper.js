@@ -10,12 +10,12 @@ async function getFollowersCount(username, apiToken) {
   if (!username) {
     return { error: "A username is required." };
   }
+  
   // Use the provided token or fall back to the environment variable
   const token = apiToken || process.env.APIFY_API_TOKEN;
   if (!token) {
     return {
-      error:
-        "An Apify API token is required (set APIFY_API_TOKEN env variable).",
+      error: "An Apify API token is required (set APIFY_API_TOKEN env variable).",
     };
   }
 
@@ -23,8 +23,13 @@ async function getFollowersCount(username, apiToken) {
     token,
   });
 
+  // Convert username to full Instagram URL - our scraper expects URLs
+  const instagramUrl = username.startsWith('http') 
+    ? username 
+    : `https://instagram.com/${username.replace('@', '')}`;
+
   const input = {
-    usernames: [username],
+    urls: instagramUrl, // Our scraper expects URLs in string format (one per line)
   };
 
   try {
@@ -33,10 +38,20 @@ async function getFollowersCount(username, apiToken) {
 
     // Fetch Actor results from the run's dataset (if any)
     const { items } = await client.dataset(run.defaultDatasetId).listItems();
-    if (items && items.length > 0 && items[0].followersCount !== undefined) {
-      return { followersCount: String(items[0].followersCount) };
+    
+    if (items && items.length > 0) {
+      const result = items[0];
+      if (result.followerCount !== undefined && result.followerCount !== null) {
+        return { 
+          followersCount: String(result.followerCount),
+          username: result.username,
+          success: result.success 
+        };
+      } else {
+        return { error: result.error || "No follower count found in actor results." };
+      }
     } else {
-      return { error: "No follower count found in actor results." };
+      return { error: "No results returned from the scraper." };
     }
   } catch (e) {
     return { error: `Failed to fetch followers: ${e.message}` };
