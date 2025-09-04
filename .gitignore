@@ -32,3 +32,5 @@ backend/venv/
 backend/serviceAccountKey.json  
 backend/instagram_results.json 
 follower-count-scraper/
+# Update .gitignore to exclude both service account files
+backend/serviceAccountKey*.json

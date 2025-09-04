@@ -1,0 +1,26 @@
+{
+  "actorSpecification": 1,
+  "name": "instagram-follower-scraper",
+  "title": "Instagram Follower Count Scraper",
+  "description": "Scrapes follower counts specifically from Instagram profiles. Fast, reliable, and easy to use.",
+  "version": "1.0",
+  "meta": {
+    "templateId": "node_basic"
+  },
+  "input": {
+    "title": "Input schema",
+    "description": "Configure which Instagram URLs to scrape for follower counts",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+      "urls": {
+        "title": "Instagram URLs to scrape (one per line)",
+        "type": "string",
+        "description": "List of Instagram profile URLs to scrape for follower counts (one URL per line)",
+        "editor": "textarea"
+      }
+    },
+    "required": ["urls"]
+  },
+  "dockerfile": "./Dockerfile"
+}
