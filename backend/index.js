@@ -332,31 +332,7 @@ app.get("/api/generate-dashboard/stream/:jobId", (req, res) => {
   });
 });
 
-// Keep the old polling endpoint as fallback (for now)
-app.get("/api/generate-dashboard/status/:jobId", async (req, res) => {
-  try {
-    const { jobId } = req.params;
-    const status = getJobStatus(jobId);
-
-    if (!status) {
-      return res.status(404).json({ error: "Job not found" });
-    }
-
-    res.status(200).json({
-      success: true,
-      jobId: jobId,
-      ...status,
-    });
-
-    // Clean up completed jobs
-    if (status.status === "completed" || status.status === "error") {
-      setTimeout(() => cleanupJob(jobId), 60000); // Clean up after 1 minute
-    }
-  } catch (error) {
-    console.error("Error getting job status:", error);
-    res.status(500).json({ error: "Failed to get job status" });
-  }
-});
+// Old polling endpoint removed - we're now fully SSE! 🚀
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

@@ -10,7 +10,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
-import { useDashboardGeneration } from "../../hooks/useDashboardGeneration";
+import { useDashboardGeneration, useSSEDashboardStatus } from "../../hooks/useDashboardGeneration";
 
 interface ConnectedProfile {
   platform: string;
@@ -33,9 +33,10 @@ const DataProcessing = ({
   const [completed, setCompleted] = useState(false);
   const [currentJobId, setCurrentJobId] = useState<string | null>(null);
 
-  const { generateDashboard, isGenerating, generateError, pollStatus } =
-    useDashboardGeneration();
-  const statusQuery = pollStatus(currentJobId!);
+  const { generateDashboard, isGenerating, generateError } = useDashboardGeneration();
+  
+  // Use SSE for real-time updates instead of polling
+  const { status: statusData, isConnected, error: sseError } = useSSEDashboardStatus(currentJobId);
 
   // Map backend steps to our UI steps
   const steps = [
@@ -77,11 +78,11 @@ const DataProcessing = ({
     }
   }, [username, currentJobId, isGenerating, generateDashboard]);
 
-  // Handle real progress updates from backend
+  // Handle real progress updates from backend via SSE
   useEffect(() => {
-    if (statusQuery.data) {
-      const status = statusQuery.data.status;
-      const backendProgress = statusQuery.data.progress;
+    if (statusData) {
+      const status = statusData.status;
+      const backendProgress = statusData.progress;
 
       // Map backend progress to our 3-step UI
       if (status === "scraping_instagram" || status === "getting_followers") {
@@ -101,10 +102,10 @@ const DataProcessing = ({
         }, 2000);
       } else if (status === "error") {
         // Handle error state
-        console.error("Analysis failed:", statusQuery.data);
+        console.error("Analysis failed:", statusData);
       }
     }
-  }, [statusQuery.data, onProcessingComplete, username]);
+  }, [statusData, onProcessingComplete, username]);
 
   const getStatusMessage = (status: string) => {
     switch (status) {
@@ -195,8 +196,8 @@ const DataProcessing = ({
               <span className="text-gray-600">
                 {completed
                   ? "Analysis Complete!"
-                  : statusQuery.data
-                  ? getStatusMessage(statusQuery.data.status)
+                  : statusData
+                  ? getStatusMessage(statusData.status)
                   : steps[currentStep]?.title}
               </span>
               <span className="font-medium text-orange-600">
@@ -206,15 +207,20 @@ const DataProcessing = ({
             <Progress value={progress} className="h-3 bg-orange-100" />
           </div>
 
-          {generateError && (
+          {(generateError || sseError) && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="h-5 w-5 text-red-500" />
                 <h4 className="font-semibold text-red-800">Analysis Failed</h4>
               </div>
               <p className="text-red-700 text-sm">
-                Error: {generateError.message}
+                {generateError ? `Error: ${generateError.message}` : `Connection error: ${sseError}`}
               </p>
+              {!isConnected && currentJobId && (
+                <p className="text-red-600 text-xs mt-2">
+                  ⚡ Lost connection to live updates. Trying to reconnect...
+                </p>
+              )}
             </div>
           )}
 
