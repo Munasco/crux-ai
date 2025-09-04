@@ -10,12 +10,13 @@ async function getFollowersCount(username, apiToken) {
   if (!username) {
     return { error: "A username is required." };
   }
-  
+
   // Use the provided token or fall back to the environment variable
   const token = apiToken || process.env.APIFY_API_TOKEN;
   if (!token) {
     return {
-      error: "An Apify API token is required (set APIFY_API_TOKEN env variable).",
+      error:
+        "An Apify API token is required (set APIFY_API_TOKEN env variable).",
     };
   }
 
@@ -24,9 +25,9 @@ async function getFollowersCount(username, apiToken) {
   });
 
   // Convert username to full Instagram URL - our scraper expects URLs
-  const instagramUrl = username.startsWith('http') 
-    ? username 
-    : `https://instagram.com/${username.replace('@', '')}`;
+  const instagramUrl = username.startsWith("http")
+    ? username
+    : `https://instagram.com/${username.replace("@", "")}`;
 
   const input = {
     urls: [instagramUrl], // Our scraper expects URLs as an array
@@ -34,21 +35,23 @@ async function getFollowersCount(username, apiToken) {
 
   try {
     // Run the Actor and wait for it to finish
-    const run = await client.actor("DNAdjmmIXMpBcJ9Ud").call(input);
+    const run = await client.actor("YJDdYs3nbTpedTT5n").call(input);
 
     // Fetch Actor results from the run's dataset (if any)
     const { items } = await client.dataset(run.defaultDatasetId).listItems();
-    
+
     if (items && items.length > 0) {
       const result = items[0];
       if (result.followerCount !== undefined && result.followerCount !== null) {
-        return { 
+        return {
           followersCount: String(result.followerCount),
           username: result.username,
-          success: result.success 
+          success: result.success,
         };
       } else {
-        return { error: result.error || "No follower count found in actor results." };
+        return {
+          error: result.error || "No follower count found in actor results.",
+        };
       }
     } else {
       return { error: "No results returned from the scraper." };
