@@ -1,10 +1,11 @@
-const Apify = require('apify');
+import { Actor } from 'apify';
+import { launchPuppeteer } from 'apify';
 
-Apify.main(async () => {
+await Actor.main(async () => {
     console.log('Starting Instagram follower count scraper...');
     
     // Get input data from Apify platform
-    const input = await Apify.getInput();
+    const input = await Actor.getInput();
     let { urls } = input;
     
     // Handle string input (textarea format)
@@ -28,7 +29,7 @@ Apify.main(async () => {
     console.log('Processing Instagram URLs:', instagramUrls);
     
     // Launch Puppeteer
-    const browser = await Apify.launchPuppeteer({
+    const browser = await launchPuppeteer({
         headless: true,
         launchOptions: {
             args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -86,12 +87,11 @@ Apify.main(async () => {
     await browser.close();
     
     // Save results to Apify dataset
-    await Apify.pushData(results);
+    await Actor.pushData(results);
     
     console.log('Instagram scraping completed. Total results:', results.length);
     console.log('Successful scrapes:', results.filter(r => r.success).length);
 });
-
 
 async function scrapeInstagram(page) {
     try {
@@ -124,7 +124,6 @@ async function scrapeInstagram(page) {
         return { username: null, followers: null };
     }
 }
-
 
 function parseFollowerCount(countStr) {
     if (!countStr) return null;

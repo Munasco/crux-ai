@@ -2,7 +2,8 @@
   "name": "follower-count-scraper",
   "version": "1.0.0",
   "main": "main.js",
-  "description": "Scrapes follower counts from various social media platforms",
+  "type": "module",
+  "description": "Scrapes follower counts from Instagram profiles",
   "author": "Your Name",
   "license": "Apache-2.0",
   "scripts": {
@@ -12,13 +13,8 @@
   "keywords": [
     "apify",
     "scraper",
-    "social-media",
-    "followers",
-    "twitter",
     "instagram",
-    "linkedin",
-    "youtube",
-    "tiktok"
+    "followers"
   ],
   "dependencies": {
     "apify": "^3.4.4",
