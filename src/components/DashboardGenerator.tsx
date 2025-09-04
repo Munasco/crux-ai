@@ -140,6 +140,35 @@ export const DashboardGenerator: React.FC = () => {
         </Card>
       )}
 
+      {currentJobId && statusQuery.isError && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-orange-500" />
+              Job Status Error
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 bg-orange-50 border border-orange-200 rounded-md">
+              <p className="text-orange-700 text-sm">
+                {statusQuery.error?.response?.status === 404 
+                  ? "Job not found. This might happen if the server was restarted. Please try generating the dashboard again."
+                  : "Failed to get job status. Please refresh and try again."
+                }
+              </p>
+              <Button 
+                className="mt-2" 
+                size="sm" 
+                variant="outline"
+                onClick={() => setCurrentJobId(null)}
+              >
+                Clear Status
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {statusQuery.isLoading && (
         <Card>
           <CardContent className="p-6">

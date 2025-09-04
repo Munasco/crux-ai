@@ -7,17 +7,18 @@ let app;
 try {
   if (process.env.NODE_ENV === 'production') {
     // In production (Cloud Run), use Application Default Credentials
-    // The service account is attached to the Cloud Run service
     app = admin.initializeApp({
       projectId: process.env.GOOGLE_CLOUD_PROJECT || 'crux-ai-a2e0d',
     });
   } else {
-    // In development, try to load service account key
+    // In development, use service account key
     const serviceAccount = require("./serviceAccountKey.json");
     app = admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
+      projectId: 'crux-ai-a2e0d',
     });
   }
+  console.log('Firebase initialized successfully');
 } catch (error) {
   console.error('Firebase initialization error:', error.message);
   
@@ -26,7 +27,7 @@ try {
     app = admin.initializeApp({
       projectId: process.env.GOOGLE_CLOUD_PROJECT || 'crux-ai-a2e0d',
     });
-    console.log('Using Application Default Credentials for Firebase');
+    console.log('Firebase fallback initialization successful');
   } catch (fallbackError) {
     console.error('Firebase fallback initialization failed:', fallbackError.message);
     throw fallbackError;

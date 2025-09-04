@@ -128,25 +128,30 @@ async function generateDashboardData(username, jobId, db) {
       timestamp: new Date().toISOString(),
     });
     console.log(`[5/5] Saving data to Firestore for user: ${username}`);
-    const userRef = db.collection("users").doc(username);
-    const userDoc = await userRef.get();
+    try {
+      const userRef = db.collection("users").doc(username);
+      const userDoc = await userRef.get();
 
-    const dataToSave = {
-      ...dashboardData,
-      lastUpdated: new Date().toISOString(),
-    };
-
-    if (userDoc.exists) {
-      await userRef.update(dataToSave);
-    } else {
-      const initialData = {
-        ...dataToSave,
-        username: username, // ensure username is set on creation
-        createdAt: new Date().toISOString(),
+      const dataToSave = {
+        ...dashboardData,
+        lastUpdated: new Date().toISOString(),
       };
-      await userRef.set(initialData);
+
+      if (userDoc.exists) {
+        await userRef.update(dataToSave);
+      } else {
+        const initialData = {
+          ...dataToSave,
+          username: username,
+          createdAt: new Date().toISOString(),
+        };
+        await userRef.set(initialData);
+      }
+      console.log("Data saved to Firestore successfully.");
+    } catch (firestoreError) {
+      console.error('Firestore operation failed:', firestoreError.message);
+      throw new Error(`Firestore error: ${firestoreError.message || 'Unknown Firestore error'}`);
     }
-    console.log("Data saved to Firestore successfully.");
     // ---------------------------------
 
     // Update final status

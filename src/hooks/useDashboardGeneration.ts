@@ -17,12 +17,26 @@ export const useDashboardGeneration = () => {
             queryKey: ['dashboardStatus', jobId],
             queryFn: () => getDashboardStatus(jobId),
             enabled: !!jobId,
+            retry: (failureCount, error: any) => {
+                // Stop retrying if job is not found (404 error)
+                if (error?.response?.status === 404) {
+                    return false;
+                }
+                // Retry up to 3 times for other errors
+                return failureCount < 3;
+            },
             refetchInterval: (dataOrQuery: any) => {
+                // Check for errors first
+                const error = dataOrQuery?.state?.error || dataOrQuery?.error;
+                if (error?.response?.status === 404) {
+                    return false; // Stop polling if job not found
+                }
+
                 // This is a version-agnostic check for React Query v4 and v5
                 const status = dataOrQuery?.state?.data?.status || dataOrQuery?.status;
 
                 if (status === 'completed' || status === 'error') {
-                    return false; // This will now correctly stop the polling
+                    return false; // Stop polling when job is done
                 }
                 return 2000; // Poll every 2 seconds
             },

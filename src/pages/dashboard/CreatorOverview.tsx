@@ -275,27 +275,6 @@ const CreatorOverview = ({
 
   return (
     <div className="space-y-8 p-6">
-      {/* Success Indicator for Real Data */}
-      {hasRealData && (
-        <Card className="border-green-200 bg-green-50 rounded-2xl">
-          <CardContent className="pt-4 ">
-            <div className="flex items-center justify-center gap-2 text-green-700">
-              <CheckCircle className="h-5 w-5" />
-              <span className="font-medium">
-                Showing analysis results for{" "}
-                <a
-                  href={`https://instagram.com/${username}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline text-blue-600 hover:text-blue-800"
-                >
-                  @{username}
-                </a>
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Creator Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
