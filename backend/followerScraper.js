@@ -24,13 +24,8 @@ async function getFollowersCount(username, apiToken) {
     token,
   });
 
-  // Convert username to full Instagram URL - our scraper expects URLs
-  const instagramUrl = username.startsWith("http")
-    ? username
-    : `https://instagram.com/${username.replace("@", "")}`;
-
   const input = {
-    urls: [instagramUrl], // Our scraper expects URLs as an array
+    instagramUsernames: [username],
   };
 
   try {

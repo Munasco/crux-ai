@@ -5,6 +5,25 @@ const { getFollowersCount } = require("./followerScraper.js");
 // In-memory storage for job status (in production, use Redis or database)
 const jobStatus = new Map();
 
+// SSE broadcasting function - will be set by main server
+let broadcastToSSEClients = null;
+
+// Initialize SSE broadcasting
+function initSSEBroadcasting(broadcastFunction) {
+  broadcastToSSEClients = broadcastFunction;
+}
+
+// Enhanced job status setter with SSE broadcasting
+function setJobStatusWithSSE(jobId, statusData) {
+  // Keep existing in-memory storage
+  jobStatus.set(jobId, statusData);
+  
+  // Broadcast to SSE clients if available
+  if (broadcastToSSEClients) {
+    broadcastToSSEClients(jobId, statusData);
+  }
+}
+
 /**
  * Orchestrates scraping, AI analysis, and saving dashboard data.
  * @param {string} username The Instagram username.
@@ -28,7 +47,7 @@ async function generateDashboardData(username, jobId, db) {
 
   try {
     // Initialize job status
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "starting",
       progress: 0,
       message: "Initializing dashboard generation...",
@@ -36,7 +55,7 @@ async function generateDashboardData(username, jobId, db) {
     });
 
     console.log(`[1/5] Starting analysis for ${username}...`);
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "scraping_instagram",
       progress: 25,
       message: "Scraping Instagram profile data...",
@@ -49,7 +68,7 @@ async function generateDashboardData(username, jobId, db) {
       throw new Error(`Failed to scrape Instagram posts: ${postsData.error}`);
 
     console.log(`[2/5] Instagram data scraped successfully.`);
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "getting_followers",
       progress: 50,
       message: "Getting follower count...",
@@ -61,7 +80,7 @@ async function generateDashboardData(username, jobId, db) {
       throw new Error(`Failed to get follower count: ${followersData.error}`);
 
     console.log(`[3/5] Follower data retrieved.`);
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "analyzing",
       progress: 75,
       message: "Analyzing data with AI...",
@@ -121,7 +140,7 @@ async function generateDashboardData(username, jobId, db) {
     dashboardData.generatedAt = new Date().toISOString();
 
     // --- Step 5: Save to Firestore ---
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "saving",
       progress: 95,
       message: "Saving analysis results...",
@@ -155,7 +174,7 @@ async function generateDashboardData(username, jobId, db) {
     // ---------------------------------
 
     // Update final status
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "completed",
       progress: 100,
       message: "Dashboard generation completed successfully!",
@@ -168,7 +187,7 @@ async function generateDashboardData(username, jobId, db) {
     console.error("Error generating dashboard data:", error);
 
     // Update error status
-    jobStatus.set(jobId, {
+    setJobStatusWithSSE(jobId, {
       status: "error",
       progress: 0,
       message: error.message || "Failed to generate dashboard data",
@@ -196,4 +215,4 @@ function cleanupJob(jobId) {
   jobStatus.delete(jobId);
 }
 
-module.exports = { generateDashboardData, getJobStatus, cleanupJob };
+module.exports = { initSSEBroadcasting, generateDashboardData, getJobStatus, cleanupJob };

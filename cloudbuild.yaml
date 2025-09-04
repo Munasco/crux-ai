@@ -31,7 +31,7 @@ steps:
         "--set-env-vars",
         "NODE_ENV=production,GOOGLE_CLOUD_PROJECT=$PROJECT_ID",
         "--set-secrets",
-        "GEMINI_API_KEY=GEMINI_API_KEY:latest,APIFY_API_TOKEN=APIFY_API_TOKEN:latest",
+        "GEMINI_API_KEY=GEMINI_API_KEY:latest,APIFY_API_TOKEN=APIFY_API_TOKEN:latest,FIRESTORE_PROJECT_ID=FIRESTORE_PROJECT_ID:latest",
         "--service-account",
         "crux-ai-access@gen-lang-client-0435215213.iam.gserviceaccount.com",
         "--quiet",

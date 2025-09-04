@@ -15,6 +15,7 @@ const { analyzeVideo } = require("./videoAnalysis.js");
 const { getFollowersCount } = require("./followerScraper.js");
 const { db } = require("./firebase.js");
 const {
+  initSSEBroadcasting,
   generateDashboardData,
   getJobStatus,
   cleanupJob,
@@ -22,6 +23,37 @@ const {
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+// SSE client management
+const sseClients = new Map(); // jobId -> [response objects]
+
+// Broadcast helper function
+function broadcastToSSEClients(jobId, statusData) {
+  const clients = sseClients.get(jobId) || [];
+  if (clients.length === 0) return;
+
+  const message = {
+    success: true,
+    jobId: jobId,
+    ...statusData  // Same format as existing API
+  };
+
+  console.log(`📡 Broadcasting to ${clients.length} SSE clients for job ${jobId}:`, statusData.status, `${statusData.progress}%`);
+
+  clients.forEach((client, index) => {
+    try {
+      client.write(`data: ${JSON.stringify(message)}\n\n`);
+    } catch (err) {
+      console.log(`Removing disconnected SSE client ${index} for job ${jobId}`);
+      clients.splice(index, 1);
+    }
+  });
+
+  // Clean up empty client arrays
+  if (clients.length === 0) {
+    sseClients.delete(jobId);
+  }
+}
 
 // A more robust CORS configuration
 const allowedOrigins = [
@@ -235,6 +267,72 @@ app.post("/api/generate-dashboard", async (req, res) => {
   }
 });
 
+// SSE endpoint for real-time status streaming
+app.get("/api/generate-dashboard/stream/:jobId", (req, res) => {
+  const { jobId } = req.params;
+  
+  console.log(`🔗 SSE client connecting for job ${jobId}`);
+  
+  // Set SSE headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Cache-Control'
+  });
+
+  // Send current status if job exists
+  const currentStatus = getJobStatus(jobId);
+  if (currentStatus) {
+    const response = {
+      success: true,
+      jobId: jobId,
+      ...currentStatus
+    };
+    res.write(`data: ${JSON.stringify(response)}\n\n`);
+    console.log(`📤 Sent initial status to SSE client for job ${jobId}:`, currentStatus.status);
+  } else {
+    res.write(`data: ${JSON.stringify({
+      error: "Job not found",
+      jobId: jobId
+    })}\n\n`);
+  }
+
+  // Store client connection
+  if (!sseClients.has(jobId)) {
+    sseClients.set(jobId, []);
+  }
+  sseClients.get(jobId).push(res);
+  console.log(`👥 Added SSE client for job ${jobId}. Total clients: ${sseClients.get(jobId).length}`);
+
+  // Keep connection alive with heartbeat
+  const heartbeat = setInterval(() => {
+    try {
+      res.write(': heartbeat\n\n');
+    } catch (err) {
+      clearInterval(heartbeat);
+    }
+  }, 30000);
+
+  // Handle client disconnect
+  req.on('close', () => {
+    console.log(`🔌 SSE client disconnected for job ${jobId}`);
+    clearInterval(heartbeat);
+    
+    const clients = sseClients.get(jobId) || [];
+    const index = clients.indexOf(res);
+    if (index !== -1) {
+      clients.splice(index, 1);
+    }
+    if (clients.length === 0) {
+      sseClients.delete(jobId);
+      console.log(`🧹 Cleaned up SSE clients for completed job ${jobId}`);
+    }
+  });
+});
+
+// Keep the old polling endpoint as fallback (for now)
 app.get("/api/generate-dashboard/status/:jobId", async (req, res) => {
   try {
     const { jobId } = req.params;
@@ -262,4 +360,8 @@ app.get("/api/generate-dashboard/status/:jobId", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
+  
+  // Initialize SSE broadcasting in dashboardGenerator
+  initSSEBroadcasting(broadcastToSSEClients);
+  console.log(`🚀 SSE broadcasting initialized`);
 });
