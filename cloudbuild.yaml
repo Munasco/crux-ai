@@ -28,8 +28,12 @@ steps:
         "us-east4",
         "--platform",
         "managed",
+        "--set-env-vars",
+        "NODE_ENV=production,GOOGLE_CLOUD_PROJECT=$PROJECT_ID",
         "--set-secrets",
         "GEMINI_API_KEY=GEMINI_API_KEY:latest,APIFY_API_TOKEN=APIFY_API_TOKEN:latest",
+        "--service-account",
+        "crux-ai-access@gen-lang-client-0435215213.iam.gserviceaccount.com",
         "--quiet",
       ]
 
@@ -46,14 +50,5 @@ steps:
         "--role=roles/run.invoker",
       ]
 
-# This section is for substituting the secret at build time
-# You need to have the GEMINI_API_KEY secret in Secret Manager
-# And grant the Cloud Build service account access to it
-# availableSubstitutions:
-#   _GEMINI_API_KEY: ''
-# secrets:
-# - kmsKeyName: projects/YOUR_GCP_PROJECT_ID/locations/YOUR_GCP_REGION/keyRings/YOUR_KEYRING/cryptoKeys/YOUR_KEY
-#   secretEnv:
-#     GEMINI_API_KEY: 'YOUR_SECRET_NAME'
 images:
   - "gcr.io/$PROJECT_ID/crux-ai-backend:$BUILD_ID"
