@@ -107,9 +107,11 @@ react> await getQuery('videos')     // Get query details
 react> await refetch('videos')      // Refetch a query
 react> await invalidate('videos')   // Invalidate query cache
 react> await clearCache()           // Clear all query cache
-react> await eval('window.location.href')  // Evaluate custom code
+react> await eval('window.location.href')  // Evaluate custom code (⚠️ Use with caution)
 react> .exit                        // Exit REPL
 ```
+
+**⚠️ Security Warning:** The `eval()` command executes arbitrary JavaScript in the browser context. Only use with trusted code in development environments. Never expose this functionality to production or untrusted users.
 
 **Example Session:**
 ```javascript

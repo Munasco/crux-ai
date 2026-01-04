@@ -2,6 +2,9 @@ const puppeteer = require('puppeteer');
 const repl = require('repl');
 const util = require('util');
 
+// Configuration
+const MAX_FIBER_DEPTH = 50; // Maximum depth to traverse React Fiber tree
+
 /**
  * Interactive React REPL Debugger
  * 
@@ -73,7 +76,7 @@ async function startREPL() {
     
     // Command: List all components
     replServer.context.components = async () => {
-      return await page.evaluate(() => {
+      return await page.evaluate((maxDepth) => {
         const result = [];
         const hook = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
         
@@ -85,7 +88,7 @@ async function startREPL() {
         const fiber = roots.size > 0 ? Array.from(roots)[0] : null;
         
         function walk(node, depth = 0) {
-          if (!node || depth > 50) return;
+          if (!node || depth > maxDepth) return;
           
           const typeName = node.type?.name || node.type?.displayName;
           
@@ -107,7 +110,7 @@ async function startREPL() {
         }
         
         return result;
-      });
+      }, MAX_FIBER_DEPTH);
     };
     
     // Command: List all queries
@@ -132,7 +135,7 @@ async function startREPL() {
     
     // Command: Get specific component
     replServer.context.getComponent = async (name) => {
-      return await page.evaluate((name) => {
+      return await page.evaluate((name, maxDepth) => {
         const hook = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
         
         if (!hook || !hook.getFiberRoots) {
@@ -143,7 +146,7 @@ async function startREPL() {
         const fiber = roots.size > 0 ? Array.from(roots)[0] : null;
         
         function find(node, depth = 0) {
-          if (!node || depth > 50) return null;
+          if (!node || depth > maxDepth) return null;
           
           const typeName = node.type?.name || node.type?.displayName;
           
@@ -174,7 +177,7 @@ async function startREPL() {
         }
         
         return { error: `Component "${name}" not found` };
-      }, name);
+      }, name, MAX_FIBER_DEPTH);
     };
     
     // Command: Get specific query
@@ -232,10 +235,15 @@ async function startREPL() {
     };
     
     // Command: Evaluate custom code
+    // WARNING: This uses eval() which can be dangerous. Only use in development
+    // and with trusted code. Never expose this to production or untrusted users.
     replServer.context.eval = async (code) => {
       return await page.evaluate((code) => {
         try {
-          return eval(code);
+          // Wrapped in function to provide safer scope
+          return (function() {
+            return eval(code);
+          })();
         } catch (e) {
           return { error: e.message };
         }

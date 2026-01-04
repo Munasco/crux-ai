@@ -20,6 +20,10 @@ const puppeteer = require('puppeteer');
 const express = require('express');
 const app = express();
 
+// Configuration
+const MAX_FIBER_DEPTH = 50; // Maximum depth to traverse React Fiber tree
+const POLL_INTERVAL_MS = 2000; // Polling interval in milliseconds
+
 let currentState = {
   components: [],
   queries: [],
@@ -119,7 +123,7 @@ async function monitor() {
               const fiber = roots.size > 0 ? Array.from(roots)[0] : null;
               
               function walk(node, depth = 0) {
-                if (!node || depth > 50) return; // Prevent infinite loops
+                if (!node || depth > maxDepth) return; // Prevent infinite loops
                 
                 try {
                   const typeName = node.type?.name || node.type?.displayName;
@@ -173,7 +177,7 @@ async function monitor() {
           }
           
           return result;
-        });
+        }, MAX_FIBER_DEPTH);
         
         currentState = state;
         
@@ -191,7 +195,7 @@ async function monitor() {
       } catch (error) {
         console.error('Error polling state:', error.message);
       }
-    }, 2000);
+    }, POLL_INTERVAL_MS);
     
   } catch (error) {
     console.error('❌ Failed to connect to React app:', error.message);

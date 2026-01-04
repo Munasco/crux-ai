@@ -23,10 +23,8 @@ async function debugReactApp() {
     devtools: true,  // Opens DevTools automatically
     args: [
       '--auto-open-devtools-for-tabs',
-      // WARNING: --disable-web-security should ONLY be used for local debugging
-      // Never use this in production or on untrusted websites
-      // This flag allows cross-origin requests which can be a security risk
-      // '--disable-web-security',
+      // Note: If you need to disable web security for CORS testing,
+      // add '--disable-web-security' flag, but NEVER use in production
     ],
   });
 
