@@ -1,8 +1,134 @@
 # Debugging Scripts
 
-This directory contains automation scripts for debugging the Crux AI React application.
+This directory contains automation scripts for debugging the Crux AI React application, including **GDB-like API access** to React internals.
 
 ## Available Scripts
+
+### `realtime-react-debugger.js` ⭐ NEW
+
+**Real-time React API server with GDB-like programmatic access.**
+
+Exposes a REST API that provides live access to React component state and React Query cache.
+
+**Features:**
+- REST API endpoints for React state
+- Real-time monitoring of components and queries
+- Programmatic access to React internals
+- CORS-enabled for external access
+- Health check endpoint
+
+**Setup:**
+
+```bash
+# Install dependencies
+npm install --save-dev puppeteer express
+```
+
+**Usage:**
+
+```bash
+# Terminal 1: Start dev server
+npm run dev
+
+# Terminal 2: Start debug API
+npm run debug:api
+# or
+node scripts/debugging/realtime-react-debugger.js
+```
+
+**API Endpoints:**
+
+```bash
+# Get full React state
+curl http://localhost:3030/api/react-state | jq
+
+# Get just components
+curl http://localhost:3030/api/components | jq
+
+# Get React Query state
+curl http://localhost:3030/api/queries | jq
+
+# Health check
+curl http://localhost:3030/health
+```
+
+**Example Response:**
+```json
+{
+  "components": [
+    {
+      "name": "Dashboard",
+      "key": null,
+      "hasProps": true,
+      "hasState": true,
+      "propsCount": 5
+    }
+  ],
+  "queries": [
+    {
+      "key": ["videos"],
+      "status": "success",
+      "isFetching": false,
+      "isStale": false,
+      "hasError": false
+    }
+  ],
+  "timestamp": "2026-01-04T10:15:30.123Z"
+}
+```
+
+### `react-repl.js` ⭐ NEW
+
+**Interactive REPL for debugging React applications (GDB-like interface).**
+
+Provides an interactive command-line interface to inspect and manipulate React state in real-time.
+
+**Setup:**
+
+```bash
+npm install --save-dev puppeteer
+```
+
+**Usage:**
+
+```bash
+npm run debug:repl
+# or
+node scripts/debugging/react-repl.js
+```
+
+**Available Commands:**
+
+```javascript
+react> await components()          // List all React components
+react> await queries()              // List React Query cache state
+react> await getComponent('Dashboard')  // Get specific component details
+react> await getQuery('videos')     // Get query details
+react> await refetch('videos')      // Refetch a query
+react> await invalidate('videos')   // Invalidate query cache
+react> await clearCache()           // Clear all query cache
+react> await eval('window.location.href')  // Evaluate custom code
+react> .exit                        // Exit REPL
+```
+
+**Example Session:**
+```javascript
+react> await components()
+[
+  { name: 'Dashboard', key: null, props: ['username'], hasState: true },
+  { name: 'VideoList', key: null, props: ['videos'], hasState: false }
+]
+
+react> await getComponent('Dashboard')
+{
+  name: 'Dashboard',
+  props: { username: 'john' },
+  state: { isLoading: false }
+}
+
+react> await refetch('videos')
+{ success: true, message: 'Refetched query: videos' }
+```
 
 ### `automated-debug.js`
 

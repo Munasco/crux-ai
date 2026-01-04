@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "debug:query": "echo 'React Query DevTools available at http://localhost:8080 - Click the icon in bottom-left corner'",
-    "debug:info": "echo 'See DEBUGGING.md for comprehensive debugging guide'"
+    "debug:info": "echo 'See DEBUGGING.md for comprehensive debugging guide'",
+    "debug:api": "node scripts/debugging/realtime-react-debugger.js",
+    "debug:repl": "node scripts/debugging/react-repl.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
