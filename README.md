@@ -118,6 +118,26 @@ python main.py
 4. **Optimization**: Implement suggested improvements and track results
 5. **Monetization**: Discover brand partnerships through our matching engine
 
+## 🐛 Debugging
+
+The project includes comprehensive debugging tools and documentation:
+
+- **React Query DevTools**: Already integrated - available in the browser when running dev server
+- **React DevTools**: Browser extension for inspecting components ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) | [Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/))
+- **Automated Debugging**: Scripts for automated testing with Puppeteer
+- **VS Code Integration**: Launch configurations for debugging in VS Code
+
+**Quick Debug:**
+```bash
+npm run dev              # Start dev server with React Query DevTools
+npm run dev:debug        # Start with verbose debugging
+npm run debug:info       # Show debugging information
+```
+
+**Documentation:**
+- [DEBUGGING.md](./DEBUGGING.md) - Comprehensive debugging guide
+- [scripts/debugging/](./scripts/debugging/) - Automated debugging scripts
+
 ## 🤝 Contributing
 
 We welcome contributions! Please feel free to submit a Pull Request.
