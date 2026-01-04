@@ -118,6 +118,55 @@ python main.py
 4. **Optimization**: Implement suggested improvements and track results
 5. **Monetization**: Discover brand partnerships through our matching engine
 
+## 🐛 Debugging
+
+The project includes comprehensive debugging tools and documentation:
+
+- **React Query DevTools**: Already integrated - available in the browser when running dev server
+- **React DevTools**: Browser extension for inspecting components ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) | [Firefox](https://addons.mozilla.org/en-US/firefox/addon/react-devtools/))
+- **React Debugging API**: Programmatic access to React internals (GDB-like API)
+- **Automated Debugging**: Scripts for automated testing with Puppeteer
+- **VS Code Integration**: Launch configurations for debugging in VS Code
+
+**Quick Debug:**
+```bash
+npm run dev              # Start dev server with React Query DevTools
+npm run dev:debug        # Start with verbose debugging
+npm run debug:info       # Show debugging information
+npm run debug:api        # Start real-time React API server (http://localhost:3030)
+npm run debug:repl       # Interactive React REPL debugger
+```
+
+**API Access (GDB-like for React):**
+```bash
+# Terminal 1: Start app
+npm run dev
+
+# Terminal 2: Start debugging API server
+npm run debug:api
+
+# Terminal 3: Query React state via API
+curl http://localhost:3030/api/react-state | jq
+curl http://localhost:3030/api/components
+curl http://localhost:3030/api/queries
+```
+
+**Interactive REPL Debugger:**
+```bash
+npm run debug:repl
+
+# Then in REPL:
+react> await components()      // List all React components
+react> await queries()          // List React Query cache
+react> await getComponent('Dashboard')  // Inspect specific component
+react> await refetch('videos')  // Refetch a query
+```
+
+**Documentation:**
+- [REACT_API_DEBUGGING.md](./REACT_API_DEBUGGING.md) - **Programmatic React debugging API (GDB-like)**
+- [DEBUGGING.md](./DEBUGGING.md) - Comprehensive debugging guide
+- [scripts/debugging/](./scripts/debugging/) - Automated debugging scripts
+
 ## 🤝 Contributing
 
 We welcome contributions! Please feel free to submit a Pull Request.
