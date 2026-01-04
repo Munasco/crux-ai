@@ -12,6 +12,7 @@
  */
 
 const puppeteer = require('puppeteer');
+const http = require('http');
 
 async function debugReactApp() {
   console.log('🚀 Starting automated React debugging...\n');
@@ -22,7 +23,10 @@ async function debugReactApp() {
     devtools: true,  // Opens DevTools automatically
     args: [
       '--auto-open-devtools-for-tabs',
-      '--disable-web-security', // Only for local debugging
+      // WARNING: --disable-web-security should ONLY be used for local debugging
+      // Never use this in production or on untrusted websites
+      // This flag allows cross-origin requests which can be a security risk
+      // '--disable-web-security',
     ],
   });
 
@@ -87,16 +91,30 @@ async function debugReactApp() {
     // Get React version
     const reactVersion = await page.evaluate(() => {
       try {
-        const rootElement = document.querySelector('#root');
-        if (rootElement && rootElement._reactRootContainer) {
-          return 'React 17 or earlier';
+        // Check if React is available in window
+        if (typeof window.React !== 'undefined' && window.React.version) {
+          return window.React.version;
         }
-        // For React 18+
+        
+        // Check for React 18+ (uses createRoot)
         const root = document.querySelector('#root');
-        if (root && root._reactRootContainer === undefined) {
-          return 'React 18+';
+        if (root) {
+          // Look for React Fiber node (more reliable)
+          const fiberKey = Object.keys(root).find(key => 
+            key.startsWith('__reactContainer') || key.startsWith('__reactFiber')
+          );
+          
+          if (fiberKey) {
+            return 'React 18+';
+          }
+          
+          // Fallback for older versions
+          if (root._reactRootContainer) {
+            return 'React 17 or earlier';
+          }
         }
-        return 'Unknown';
+        
+        return 'React detected but version unknown';
       } catch (e) {
         return 'Unable to detect';
       }
@@ -177,8 +195,6 @@ async function debugReactApp() {
 
 // Check if dev server is running
 async function checkDevServer() {
-  const http = require('http');
-  
   return new Promise((resolve) => {
     const req = http.get('http://localhost:8080', (res) => {
       resolve(true);

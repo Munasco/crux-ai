@@ -173,11 +173,17 @@ npm run build:dev
 You can use Chrome's remote debugging to access console output:
 
 ```bash
-# Start Chrome with remote debugging
+# Start Chrome with remote debugging (Linux)
 google-chrome --remote-debugging-port=9222
 
-# Or using npm script (add to package.json)
-npm run debug:browser
+# macOS
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+
+# Windows
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222
+
+# Or find your Chrome executable and add the flag
+chrome --remote-debugging-port=9222
 ```
 
 ### React DevTools Standalone
